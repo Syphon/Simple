@@ -127,16 +127,42 @@
 	// Work out the proper size of our glView, the size of the rest of the window, combine them
 	NSSize imageSize = NSMakeSize(self.frameWidth, self.frameHeight);
 	NSRect windowFrame = [[glView window] frame];
+	
+	if (imageSize.width == 0 || imageSize.height == 0)
+	{
+		imageSize.width = 640;
+		imageSize.height = 480;
+	}
+
 	NSRect originalContentRect = [[glView window] contentRectForFrameRect:windowFrame];
 	NSUInteger originalContentHeight = originalContentRect.size.height;
 	NSUInteger viewHeight = [glView frame].size.height;
 	NSUInteger statusBarHeight = originalContentHeight - viewHeight;
+	
+	// Make sure we are at least as big as the window's minimum size
+	NSSize minImageSize = [[glView window] minSize];
+	minImageSize.width -= (windowFrame.size.width - originalContentRect.size.width);
+	minImageSize.height -= statusBarHeight + (windowFrame.size.height - originalContentHeight);
+	if (imageSize.height < minImageSize.height)
+	{
+		float scale = minImageSize.height / imageSize.height;
+		imageSize.height *= scale;
+		imageSize.width *= scale;
+	}
+	if (imageSize.width < minImageSize.width)
+	{
+		float scale = minImageSize.width / imageSize.width;
+		imageSize.height *= scale;
+		imageSize.width *= scale;
+	}
+	
 	NSSize newContentSize = NSMakeSize(imageSize.width, imageSize.height + statusBarHeight);
 	
 	NSInteger delta = newContentSize.height - originalContentHeight;
 	
 	NSRect newContentRect = NSMakeRect(originalContentRect.origin.x, originalContentRect.origin.y, newContentSize.width, newContentSize.height);
 	NSRect newFrame = [[glView window] frameRectForContentRect:newContentRect];
+	
 	// Move the window up (or down) so it remains rooted at the top left
 	newFrame.origin.y -= delta;
 	return newFrame;
@@ -178,7 +204,8 @@
 - (void)resizeWindowForCurrentVideo
 {
 	[self willChangeValueForKey:@"currentWindowVideoScaling"];
-	[[glView window] setFrame:[self windowFrameRectForCurrentVideo] display:YES animate:NO];
+	NSRect newFrame = [self windowFrameRectForCurrentVideo];
+	[[glView window] setFrame:newFrame display:YES animate:NO];
 	// did-change notice gets posted when we receive the delegate message
 }
 
