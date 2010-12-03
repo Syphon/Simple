@@ -32,7 +32,7 @@
 #import <Syphon/Syphon.h>
 #import "SimpleClientGLView.h"
 
-@interface SimpleClientAppDelegate : NSObject <NSApplicationDelegate>
+@interface SimpleClientAppDelegate : NSObject <NSApplicationDelegate, NSWindowDelegate>
 {
 	SyphonClient* syClient;
 	
@@ -45,11 +45,16 @@
 	NSTimeInterval fpsStart;
 	NSUInteger fpsCount;
 	NSUInteger FPS;
+	NSUInteger frameWidth;
+	NSUInteger frameHeight;
 }
 @property (readwrite, copy) NSString* selectedServersUUID;
 
 @property (assign) NSUInteger FPS;
-
+@property (readwrite, assign) NSUInteger frameWidth;
+@property (readwrite, assign) NSUInteger frameHeight;
+@property (readonly) float currentWindowVideoScaling;
+@property (readonly) NSUInteger currentWindowVideoScalingAsPercentage;
 // Actions
 - (IBAction) setServer:(id)sender;
 @end

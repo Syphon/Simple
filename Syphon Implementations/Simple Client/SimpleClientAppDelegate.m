@@ -35,9 +35,18 @@
 
 @implementation SimpleClientAppDelegate
 
++ (NSSet *)keyPathsForValuesAffectingCurrentWindowVideoScalingAsPercentage
+{
+	return [NSSet setWithObject:@"currentWindowVideoScaling"];
+}
+
 @synthesize selectedServersUUID;
 
 @synthesize FPS;
+
+@synthesize frameWidth;
+
+@synthesize frameHeight;
 
 - (BOOL)applicationShouldTerminateAfterLastWindowClosed:(NSApplication *)theApplication
 {
@@ -46,6 +55,7 @@
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
 {
+	[[glView window] setDelegate:self];
 	// observe changes in the list of servers so we can build our UI.
 	[[SyphonServerDirectory sharedDirectory] addObserver:self forKeyPath:@"servers" options:0 context:nil];
 	[self handleServerChange];
@@ -61,6 +71,118 @@
 	[syClient release];
 	syClient = nil;
 }
+
+#pragma mark Window Sizing
+
+- (void)windowDidResize:(NSNotification *)notification
+{
+	if ([[notification object] isEqual:[glView window]])
+	{
+		[self didChangeValueForKey:@"currentWindowVideoScaling"];
+	}
+}
+
+- (NSSize)windowWillResize:(NSWindow *)sender toSize:(NSSize)frameSize
+{
+	if ([sender isEqual:[glView window]])
+	{
+		[self willChangeValueForKey:@"currentWindowVideoScaling"];
+		// If we have a current video frame, make the size conform to its aspect ratio
+		// We can't just use NSWindow's aspectRatio method because our status bar is of a fixed size
+		if (self.frameWidth > 0 && self.frameHeight > 0)
+		{
+			NSSize min = [sender minSize];
+			if (frameSize.width < min.width)
+				frameSize.width = min.width;
+			if (frameSize.height < min.height)
+				frameSize.height = min.height;
+			
+			NSRect windowFrame = [sender frame];
+			NSUInteger contentHeight = [sender contentRectForFrameRect:windowFrame].size.height;
+			NSUInteger frameExtraHeight = windowFrame.size.height - contentHeight;
+			NSUInteger viewHeight = [glView frame].size.height;
+			NSUInteger statusBarHeight = contentHeight - viewHeight;
+			
+			NSSize scaled;
+			float wr = self.frameWidth / frameSize.width;
+			float hr = self.frameHeight / (frameSize.height - frameExtraHeight - statusBarHeight);
+			float ratio = (hr > wr ? wr : hr);
+			scaled = NSMakeSize((self.frameWidth / ratio), (self.frameHeight / ratio) + statusBarHeight + frameExtraHeight);
+			
+			return scaled;
+		}
+		else
+		{
+			return frameSize;
+		}
+	}
+	else
+	{
+		return frameSize;
+	}
+}
+
+- (NSRect)windowFrameRectForCurrentVideo
+{
+	// Work out the proper size of our glView, the size of the rest of the window, combine them
+	NSSize imageSize = NSMakeSize(self.frameWidth, self.frameHeight);
+	NSRect windowFrame = [[glView window] frame];
+	NSRect originalContentRect = [[glView window] contentRectForFrameRect:windowFrame];
+	NSUInteger originalContentHeight = originalContentRect.size.height;
+	NSUInteger viewHeight = [glView frame].size.height;
+	NSUInteger statusBarHeight = originalContentHeight - viewHeight;
+	NSSize newContentSize = NSMakeSize(imageSize.width, imageSize.height + statusBarHeight);
+	
+	NSInteger delta = newContentSize.height - originalContentHeight;
+	
+	NSRect newContentRect = NSMakeRect(originalContentRect.origin.x, originalContentRect.origin.y, newContentSize.width, newContentSize.height);
+	NSRect newFrame = [[glView window] frameRectForContentRect:newContentRect];
+	// Move the window up (or down) so it remains rooted at the top left
+	newFrame.origin.y -= delta;
+	return newFrame;
+}
+
+- (NSRect)windowWillUseStandardFrame:(NSWindow *)window defaultFrame:(NSRect)newFrame
+{
+	// We get this when the user hits the zoom box, if we're not already zoomed
+	if ([window isEqual:[glView window]])
+	{
+		// Resize to the current video
+		NSRect preferred = [self windowFrameRectForCurrentVideo];
+		// Move to the top left of the current screen, allowing for dock, etc
+		NSRect available = [[window screen] visibleFrame];
+		preferred.origin.x = available.origin.x;
+		preferred.origin.y = available.origin.y + available.size.height - preferred.size.height;
+		return preferred;
+	}
+	else
+	{
+		return newFrame;
+	}
+
+}
+
+- (float)currentWindowVideoScaling
+{
+	NSUInteger contentWidth = [[glView window] contentRectForFrameRect:[[glView window] frame]].size.width;
+	if (contentWidth && self.frameWidth)
+		return (float)contentWidth / (float)self.frameWidth;
+	else
+		return 1.0f;
+}
+
+- (NSUInteger)currentWindowVideoScalingAsPercentage
+{
+	return self.currentWindowVideoScaling * 100;
+}
+- (void)resizeWindowForCurrentVideo
+{
+	[self willChangeValueForKey:@"currentWindowVideoScaling"];
+	[[glView window] setFrame:[self windowFrameRectForCurrentVideo] display:YES animate:NO];
+	// did-change notice gets posted when we receive the delegate message
+}
+
+#pragma mark Clients
 
 - (void)handleServerChange
 {
@@ -106,6 +228,9 @@
 		{
 			[self setServer:[availableServersMenu selectedItem]];
 		} else {
+			self.FPS = 0;
+			self.frameWidth = 0;
+			self.frameHeight = 0;			
 			[syClient stop];
 			[syClient release];
 			syClient = nil;
@@ -130,13 +255,23 @@
 {
 	// In handleServerChange we set the represented objects of the menu items to be the server-descriptions we got from SyphonServerDirectory
 	// so now we use that to create a new client.
-	self.selectedServersUUID = [[sender representedObject] objectForKey:SyphonServerDescriptionUUIDKey];
+	
+	NSString *newUUID = [[sender representedObject] objectForKey:SyphonServerDescriptionUUIDKey];
+	
+	if (newUUID && [self.selectedServersUUID isEqualToString:newUUID])
+	{
+		// If our current client has been selected we can do nothing
+		return;
+	}
+	
+	self.selectedServersUUID = newUUID;
 	// Stop our current client
 	[syClient stop];
 	[syClient release];
 	// Reset our terrible FPS display
 	fpsStart = [NSDate timeIntervalSinceReferenceDate];
 	fpsCount = 0;
+	self.FPS = 0;
 	syClient = [[SyphonClient alloc] initWithServerDescription:[sender representedObject] options:nil newFrameHandler:^(SyphonClient *client) {
 		// This gets called whenever the client receives a new frame.
 		// First we track our framerate...
@@ -144,9 +279,31 @@
 		float elapsed = [NSDate timeIntervalSinceReferenceDate] - fpsStart;
 		if (elapsed > 1.0)
 		{
-			self.FPS = fpsCount / elapsed;
+			self.FPS = ceilf(fpsCount / elapsed);
 			fpsStart = [NSDate timeIntervalSinceReferenceDate];
 			fpsCount = 0;
+		}
+		// ...then we check to see if our dimensions display or window shape needs to be updated
+		SyphonImage *frame = [client newFrameImageForContext:[[glView openGLContext] CGLContextObj]];
+
+		NSSize imageSize = frame.textureSize;
+		
+		[frame release];
+		
+		BOOL changed = NO;
+		if (self.frameWidth != imageSize.width)
+		{
+			changed = YES;
+			self.frameWidth = imageSize.width;
+		}
+		if (self.frameHeight != imageSize.height)
+		{
+			changed = YES;
+			self.frameHeight = imageSize.height;
+		}
+		if (changed)
+		{
+			[self resizeWindowForCurrentVideo];
 		}
 		// ...then mark our view as needing display, it will get the frame when it's ready to draw
 		[glView setNeedsDisplay:YES];
@@ -157,6 +314,8 @@
 	// If we have a client we do nothing - wait until it outputs a frame
 	if (syClient == nil)
 	{
+		self.frameWidth = 0;
+		self.frameHeight = 0;
 		[glView setNeedsDisplay:YES];
 	}
 }
