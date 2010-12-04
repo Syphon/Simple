@@ -28,16 +28,17 @@
  */
 
 #import "SimpleClientAppDelegate.h"
+#import "FloatToStringValueTransformer.h"
 
 @interface SimpleClientAppDelegate (Private)
 - (void)handleServerChange;
 @end
 
 @implementation SimpleClientAppDelegate
-
-+ (NSSet *)keyPathsForValuesAffectingCurrentWindowVideoScalingAsPercentage
++ (void)initialize
 {
-	return [NSSet setWithObject:@"currentWindowVideoScaling"];
+	FloatToStringValueTransformer *transformer = [[[FloatToStringValueTransformer alloc] init] autorelease];
+	[NSValueTransformer setValueTransformer:transformer forName:@"FloatToStringTransformer"];
 }
 
 @synthesize selectedServersUUID;
@@ -197,10 +198,6 @@
 		return 1.0f;
 }
 
-- (NSUInteger)currentWindowVideoScalingAsPercentage
-{
-	return self.currentWindowVideoScaling * 100;
-}
 - (void)resizeWindowForCurrentVideo
 {
 	[self willChangeValueForKey:@"currentWindowVideoScaling"];

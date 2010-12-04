@@ -2163,7 +2163,7 @@
 						<string key="label">displayPatternValue1: frameWidth</string>
 						<reference key="source" ref="862082734"/>
 						<reference key="destination" ref="976324537"/>
-						<object class="NSNibBindingConnector" key="connector" id="779420620">
+						<object class="NSNibBindingConnector" key="connector" id="453860164">
 							<reference key="NSSource" ref="862082734"/>
 							<reference key="NSDestination" ref="976324537"/>
 							<string key="NSLabel">displayPatternValue1: frameWidth</string>
@@ -2171,19 +2171,19 @@
 							<string key="NSKeyPath">frameWidth</string>
 							<object class="NSDictionary" key="NSOptions">
 								<string key="NS.key.0">NSDisplayPattern</string>
-								<string key="NS.object.0"> Source: %{value1}@ x %{value2}@ (at %{value4}@ %), %{value3}@ FPS</string>
+								<string key="NS.object.0"> Source: %{value1}@ x %{value2}@ (x %{value4}@), %{value3}@ FPS</string>
 							</object>
 							<int key="NSNibBindingConnectorVersion">2</int>
 						</object>
 					</object>
-					<int key="connectionID">610</int>
+					<int key="connectionID">617</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBBindingConnection" key="connection">
 						<string key="label">displayPatternValue2: frameHeight</string>
 						<reference key="source" ref="862082734"/>
 						<reference key="destination" ref="976324537"/>
-						<object class="NSNibBindingConnector" key="connector" id="731763884">
+						<object class="NSNibBindingConnector" key="connector" id="737105404">
 							<reference key="NSSource" ref="862082734"/>
 							<reference key="NSDestination" ref="976324537"/>
 							<string key="NSLabel">displayPatternValue2: frameHeight</string>
@@ -2191,20 +2191,20 @@
 							<string key="NSKeyPath">frameHeight</string>
 							<object class="NSDictionary" key="NSOptions">
 								<string key="NS.key.0">NSDisplayPattern</string>
-								<string key="NS.object.0"> Source: %{value1}@ x %{value2}@ (at %{value4}@ %), %{value3}@ FPS</string>
+								<string key="NS.object.0"> Source: %{value1}@ x %{value2}@ (x %{value4}@), %{value3}@ FPS</string>
 							</object>
-							<reference key="NSPreviousConnector" ref="779420620"/>
+							<reference key="NSPreviousConnector" ref="453860164"/>
 							<int key="NSNibBindingConnectorVersion">2</int>
 						</object>
 					</object>
-					<int key="connectionID">611</int>
+					<int key="connectionID">618</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBBindingConnection" key="connection">
 						<string key="label">displayPatternValue3: FPS</string>
 						<reference key="source" ref="862082734"/>
 						<reference key="destination" ref="976324537"/>
-						<object class="NSNibBindingConnector" key="connector" id="393220385">
+						<object class="NSNibBindingConnector" key="connector" id="515572710">
 							<reference key="NSSource" ref="862082734"/>
 							<reference key="NSDestination" ref="976324537"/>
 							<string key="NSLabel">displayPatternValue3: FPS</string>
@@ -2212,34 +2212,43 @@
 							<string key="NSKeyPath">FPS</string>
 							<object class="NSDictionary" key="NSOptions">
 								<string key="NS.key.0">NSDisplayPattern</string>
-								<string key="NS.object.0"> Source: %{value1}@ x %{value2}@ (at %{value4}@ %), %{value3}@ FPS</string>
+								<string key="NS.object.0"> Source: %{value1}@ x %{value2}@ (x %{value4}@), %{value3}@ FPS</string>
 							</object>
-							<reference key="NSPreviousConnector" ref="731763884"/>
+							<reference key="NSPreviousConnector" ref="737105404"/>
 							<int key="NSNibBindingConnectorVersion">2</int>
 						</object>
 					</object>
-					<int key="connectionID">612</int>
+					<int key="connectionID">619</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBBindingConnection" key="connection">
-						<string key="label">displayPatternValue4: currentWindowVideoScalingAsPercentage</string>
+						<string key="label">displayPatternValue4: currentWindowVideoScaling</string>
 						<reference key="source" ref="862082734"/>
 						<reference key="destination" ref="976324537"/>
 						<object class="NSNibBindingConnector" key="connector">
 							<reference key="NSSource" ref="862082734"/>
 							<reference key="NSDestination" ref="976324537"/>
-							<string key="NSLabel">displayPatternValue4: currentWindowVideoScalingAsPercentage</string>
+							<string key="NSLabel">displayPatternValue4: currentWindowVideoScaling</string>
 							<string key="NSBinding">displayPatternValue4</string>
-							<string key="NSKeyPath">currentWindowVideoScalingAsPercentage</string>
+							<string key="NSKeyPath">currentWindowVideoScaling</string>
 							<object class="NSDictionary" key="NSOptions">
-								<string key="NS.key.0">NSDisplayPattern</string>
-								<string key="NS.object.0"> Source: %{value1}@ x %{value2}@ (at %{value4}@ %), %{value3}@ FPS</string>
+								<bool key="EncodedWithXMLCoder">YES</bool>
+								<object class="NSArray" key="dict.sortedKeys">
+									<bool key="EncodedWithXMLCoder">YES</bool>
+									<string>NSDisplayPattern</string>
+									<string>NSValueTransformerName</string>
+								</object>
+								<object class="NSMutableArray" key="dict.values">
+									<bool key="EncodedWithXMLCoder">YES</bool>
+									<string> Source: %{value1}@ x %{value2}@ (x %{value4}@), %{value3}@ FPS</string>
+									<string>FloatToStringTransformer</string>
+								</object>
 							</object>
-							<reference key="NSPreviousConnector" ref="393220385"/>
+							<reference key="NSPreviousConnector" ref="515572710"/>
 							<int key="NSNibBindingConnectorVersion">2</int>
 						</object>
 					</object>
-					<int key="connectionID">613</int>
+					<int key="connectionID">620</int>
 				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
@@ -3919,7 +3928,7 @@
 				</object>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">613</int>
+			<int key="maxID">620</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">

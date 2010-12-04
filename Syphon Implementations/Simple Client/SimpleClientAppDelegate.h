@@ -54,7 +54,6 @@
 @property (readwrite, assign) NSUInteger frameWidth;
 @property (readwrite, assign) NSUInteger frameHeight;
 @property (readonly) float currentWindowVideoScaling;
-@property (readonly) NSUInteger currentWindowVideoScalingAsPercentage;
 // Actions
 - (IBAction) setServer:(id)sender;
 @end
