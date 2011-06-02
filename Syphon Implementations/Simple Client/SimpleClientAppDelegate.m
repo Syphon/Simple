@@ -298,39 +298,45 @@
 	self.FPS = 0;
 	syClient = [[SyphonClient alloc] initWithServerDescription:[sender representedObject] options:nil newFrameHandler:^(SyphonClient *client) {
 		// This gets called whenever the client receives a new frame.
-		// First we track our framerate...
-		fpsCount++;
-		float elapsed = [NSDate timeIntervalSinceReferenceDate] - fpsStart;
-		if (elapsed > 1.0)
-		{
-			self.FPS = ceilf(fpsCount / elapsed);
-			fpsStart = [NSDate timeIntervalSinceReferenceDate];
-			fpsCount = 0;
-		}
-		// ...then we check to see if our dimensions display or window shape needs to be updated
-		SyphonImage *frame = [client newFrameImageForContext:[[glView openGLContext] CGLContextObj]];
+        
+        // The new-frame handler could be called from any thread, but because we update our UI we have
+        // to do this on the main thread.
+        
+        [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+            // First we track our framerate...
+            fpsCount++;
+            float elapsed = [NSDate timeIntervalSinceReferenceDate] - fpsStart;
+            if (elapsed > 1.0)
+            {
+                self.FPS = ceilf(fpsCount / elapsed);
+                fpsStart = [NSDate timeIntervalSinceReferenceDate];
+                fpsCount = 0;
+            }
+            // ...then we check to see if our dimensions display or window shape needs to be updated
+            SyphonImage *frame = [client newFrameImageForContext:[[glView openGLContext] CGLContextObj]];
 
-		NSSize imageSize = frame.textureSize;
-		
-		[frame release];
-		
-		BOOL changed = NO;
-		if (self.frameWidth != imageSize.width)
-		{
-			changed = YES;
-			self.frameWidth = imageSize.width;
-		}
-		if (self.frameHeight != imageSize.height)
-		{
-			changed = YES;
-			self.frameHeight = imageSize.height;
-		}
-		if (changed)
-		{
-			[self resizeWindowForCurrentVideo];
-		}
-		// ...then mark our view as needing display, it will get the frame when it's ready to draw
-		[glView setNeedsDisplay:YES];
+            NSSize imageSize = frame.textureSize;
+            
+            [frame release];
+            
+            BOOL changed = NO;
+            if (self.frameWidth != imageSize.width)
+            {
+                changed = YES;
+                self.frameWidth = imageSize.width;
+            }
+            if (self.frameHeight != imageSize.height)
+            {
+                changed = YES;
+                self.frameHeight = imageSize.height;
+            }
+            if (changed)
+            {
+                [self resizeWindowForCurrentVideo];
+            }
+            // ...then mark our view as needing display, it will get the frame when it's ready to draw
+            [glView setNeedsDisplay:YES];
+        }];
 	}];
 	// Our view uses the client to draw, so keep it up to date
 	[glView setSyClient:syClient];
