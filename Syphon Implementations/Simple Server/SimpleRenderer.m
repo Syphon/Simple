@@ -168,7 +168,7 @@
 		glFramebufferRenderbufferEXT(GL_FRAMEBUFFER_EXT, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER_EXT, _depthBuffer);
 		// Draw black so we have output if the renderer isn't loaded
 		glClearColor(0.0, 0.0, 0.0, 0.0);
-		glClear(GL_COLOR_BUFFER_BIT);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glBindFramebufferEXT(GL_FRAMEBUFFER, 0);
 		
 		GLenum status = glCheckFramebufferStatusEXT(GL_FRAMEBUFFER);
@@ -203,15 +203,15 @@
 	glMatrixMode(GL_MODELVIEW);
 	glPushMatrix();
 	glLoadIdentity();
-	
+	    
 	// render QC.
 	NSTimeInterval time = [NSDate timeIntervalSinceReferenceDate];
 	
 	time -= _start;	
 	
 	if (self.rendersComposition)
-	{
-		[self.QCRenderer renderAtTime:time arguments:nil];
+	{        
+    	[self.QCRenderer renderAtTime:time arguments:nil];
 	}
 	else
 	{

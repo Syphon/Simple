@@ -47,4 +47,6 @@
 @property (assign) IBOutlet NSWindow *window;
 @property (assign) IBOutlet SimpleServerGLView* glView;
 @property (retain) SimpleRenderer *renderer;
+
+- (IBAction) open:(id)sender;
 @end

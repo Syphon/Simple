@@ -53,7 +53,7 @@
 	syServer = [[SyphonServer alloc] initWithName:nil context:context options:nil];
 	
 	// Init our renderer in the background as loading the composition takes some time
-	dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+	dispatch_async(dispatch_get_main_queue() /*(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)*/, ^{
 		
 		SimpleRenderer *newRenderer = [[SimpleRenderer alloc] initWithFile:[[NSBundle mainBundle] pathForResource:@"ServerDemo" ofType:@"qtz"] context:[[glView openGLContext] CGLContextObj]];
 		
@@ -101,36 +101,72 @@
 {
 	// Render our composition
 	SimpleRenderer *theRenderer = self.renderer;
-	[theRenderer render];
-	
-	// Monitor frame-rate
-	fpsCount++;
-	float elapsed = [NSDate timeIntervalSinceReferenceDate] - fpsStart;
-	if (elapsed > 0.5)
-	{
-		self.FPS = fpsCount / elapsed;
-		fpsCount = 0;
-		fpsStart = [NSDate timeIntervalSinceReferenceDate];
-	}
-	
-	// We only publish our frame if we have clients
-	if ([syServer hasClients])
-	{
-		// lockTexture just stops the renderer from drawing until we're done with it
-		[theRenderer lockTexture];
-		
-		// publish our frame to our server. We use the whole texture, but we could just publish a region of it
-		CGLLockContext(syServer.context);
-		[syServer publishFrameTexture:theRenderer.textureName
-						textureTarget:GL_TEXTURE_RECTANGLE_EXT
-						  imageRegion:NSMakeRect(0, 0, theRenderer.textureSize.width, theRenderer.textureSize.height)
-					textureDimensions:theRenderer.textureSize
-							  flipped:NO];
-		CGLUnlockContext(syServer.context);
-		// let the renderer resume drawing
-		[theRenderer unlockTexture];
-	}
-	// Tell the view we have a new frame for it
-	[glView setNeedsDisplay:YES];
+    
+    if(theRenderer != nil)
+    {
+        [theRenderer render];
+        
+        // Monitor frame-rate
+        fpsCount++;
+        float elapsed = [NSDate timeIntervalSinceReferenceDate] - fpsStart;
+        if (elapsed > 0.5)
+        {
+            self.FPS = fpsCount / elapsed;
+            fpsCount = 0;
+            fpsStart = [NSDate timeIntervalSinceReferenceDate];
+        }
+        
+        // We only publish our frame if we have clients
+        if ([syServer hasClients])
+        {
+            // lockTexture just stops the renderer from drawing until we're done with it
+            [theRenderer lockTexture];
+            
+            // publish our frame to our server. We use the whole texture, but we could just publish a region of it
+            CGLLockContext(syServer.context);
+            [syServer publishFrameTexture:theRenderer.textureName
+                            textureTarget:GL_TEXTURE_RECTANGLE_EXT
+                              imageRegion:NSMakeRect(0, 0, theRenderer.textureSize.width, theRenderer.textureSize.height)
+                        textureDimensions:theRenderer.textureSize
+                                  flipped:NO];
+            CGLUnlockContext(syServer.context);
+            // let the renderer resume drawing
+            [theRenderer unlockTexture];
+        }
+        // Tell the view we have a new frame for it
+        [glView setNeedsDisplay:YES];
+    }
+}
+
+#pragma mark User QTZ support.
+
+- (IBAction) open:(id)sender
+{
+    NSOpenPanel* panel = [NSOpenPanel openPanel];
+    [panel setAllowedFileTypes:[NSArray arrayWithObject:@"qtz"]];
+    [panel setAllowsMultipleSelection:NO];
+    
+    [panel beginSheetModalForWindow:[glView window] completionHandler:^(NSInteger result)
+     {
+        if(result == NSFileHandlingPanelOKButton)
+        {
+            NSString* path = [[[panel URLs] objectAtIndex:0] path];
+            
+            // Init our renderer in the background as loading the composition takes some time
+            dispatch_async(dispatch_get_main_queue(), ^{
+                
+                SimpleRenderer *newRenderer = [[SimpleRenderer alloc] initWithFile:[path stringByStandardizingPath] context:[[glView openGLContext] CGLContextObj]];
+                
+                // We use a simple protocol <SimpleServerTextureSource> so the view can get texture information from the renderer when it wants to draw
+                [glView setSource:newRenderer];
+                
+                [newRenderer setTextureSize:[glView frame].size];
+                
+                self.renderer = newRenderer;
+                [newRenderer release];
+            });                              
+        }
+         
+     }];
 }
 @end
