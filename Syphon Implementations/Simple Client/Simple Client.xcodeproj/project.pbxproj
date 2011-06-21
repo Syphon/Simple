@@ -18,7 +18,8 @@
 		8D11072D0486CEB800E47090 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
 		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
 		BD8BFB42122BF13E0015B2BE /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = BD8BFB41122BF13E0015B2BE /* Credits.rtf */; };
-		E28A68DA12A9D57D003A5C62 /* FloatToStringValueTransformer.m in Sources */ = {isa = PBXBuildFile; fileRef = E28A68D912A9D57D003A5C62 /* FloatToStringValueTransformer.m */; };
+		BDC63CDB13AFDF070097BBAD /* ToolbarDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = BDC63CDA13AFDF070097BBAD /* ToolbarDelegate.m */; };
+		BDC63CEE13AFFE830097BBAD /* ServerDescriptionValueTransformer.m in Sources */ = {isa = PBXBuildFile; fileRef = BDC63CED13AFFE830097BBAD /* ServerDescriptionValueTransformer.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -71,8 +72,10 @@
 		8D1107310486CEB800E47090 /* Simple_Client-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Simple_Client-Info.plist"; sourceTree = "<group>"; };
 		8D1107320486CEB800E47090 /* Simple Client.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Simple Client.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		BD8BFB3B122BF0FD0015B2BE /* English */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; name = English; path = English.lproj/Credits.rtf; sourceTree = "<group>"; };
-		E28A68D812A9D57D003A5C62 /* FloatToStringValueTransformer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FloatToStringValueTransformer.h; sourceTree = "<group>"; };
-		E28A68D912A9D57D003A5C62 /* FloatToStringValueTransformer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FloatToStringValueTransformer.m; sourceTree = "<group>"; };
+		BDC63CD913AFDF070097BBAD /* ToolbarDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ToolbarDelegate.h; sourceTree = "<group>"; };
+		BDC63CDA13AFDF070097BBAD /* ToolbarDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ToolbarDelegate.m; sourceTree = "<group>"; };
+		BDC63CEC13AFFE830097BBAD /* ServerDescriptionValueTransformer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ServerDescriptionValueTransformer.h; sourceTree = "<group>"; };
+		BDC63CED13AFFE830097BBAD /* ServerDescriptionValueTransformer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ServerDescriptionValueTransformer.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -94,10 +97,12 @@
 			children = (
 				256AC3D80F4B6AC300CF3369 /* SimpleClientAppDelegate.h */,
 				256AC3D90F4B6AC300CF3369 /* SimpleClientAppDelegate.m */,
+				BDC63CD913AFDF070097BBAD /* ToolbarDelegate.h */,
+				BDC63CDA13AFDF070097BBAD /* ToolbarDelegate.m */,
 				1BB5774711CF205C008A305F /* SimpleClientGLView.h */,
 				1BB5774811CF205C008A305F /* SimpleClientGLView.m */,
-				E28A68D812A9D57D003A5C62 /* FloatToStringValueTransformer.h */,
-				E28A68D912A9D57D003A5C62 /* FloatToStringValueTransformer.m */,
+				BDC63CEC13AFFE830097BBAD /* ServerDescriptionValueTransformer.h */,
+				BDC63CED13AFFE830097BBAD /* ServerDescriptionValueTransformer.m */,
 			);
 			name = Classes;
 			sourceTree = "<group>";
@@ -265,7 +270,8 @@
 				8D11072D0486CEB800E47090 /* main.m in Sources */,
 				256AC3DA0F4B6AC300CF3369 /* SimpleClientAppDelegate.m in Sources */,
 				1BB5774A11CF205C008A305F /* SimpleClientGLView.m in Sources */,
-				E28A68DA12A9D57D003A5C62 /* FloatToStringValueTransformer.m in Sources */,
+				BDC63CDB13AFDF070097BBAD /* ToolbarDelegate.m in Sources */,
+				BDC63CEE13AFFE830097BBAD /* ServerDescriptionValueTransformer.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

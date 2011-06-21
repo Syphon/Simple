@@ -35,12 +35,11 @@
 @interface SimpleClientAppDelegate : NSObject <NSApplicationDelegate, NSWindowDelegate>
 {
 	SyphonClient* syClient;
-	
+	IBOutlet NSArrayController *availableServersController;
 	IBOutlet SimpleClientGLView* glView;
-	IBOutlet NSPopUpButton* availableServersMenu;
-	
 	// useful for getting the last selected server
-	NSString* selectedServersUUID;
+//	NSString* selectedServersUUID;
+    NSArray *selectedServerDescriptions;
 	
 	NSTimeInterval fpsStart;
 	NSUInteger fpsCount;
@@ -48,12 +47,11 @@
 	NSUInteger frameWidth;
 	NSUInteger frameHeight;
 }
-@property (readwrite, copy) NSString* selectedServersUUID;
-
+//@property (readwrite, copy) NSString* selectedServersUUID;
+@property (readwrite, retain) NSArray *selectedServerDescriptions;
 @property (assign) NSUInteger FPS;
 @property (readwrite, assign) NSUInteger frameWidth;
 @property (readwrite, assign) NSUInteger frameHeight;
-@property (readonly) float currentWindowVideoScaling;
 // Actions
-- (IBAction) setServer:(id)sender;
+//- (IBAction) setServer:(id)sender;
 @end
