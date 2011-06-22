@@ -52,6 +52,8 @@
         [item setPaletteLabel:@"Source"];
         [item setToolTip:@"Select a Syphon Server"];
         [item setView:availableServersMenu];
+        [item setMinSize:(NSSize){[availableServersMenu frame].size.width / 3.0, [availableServersMenu frame].size.height}];
+        [item setMaxSize:[availableServersMenu frame].size];
         NSMenuItem *menuForm = [[[NSMenuItem alloc] init] autorelease];
         [menuForm setMenu:[availableServersMenu menu]];
         [item setMenuFormRepresentation:menuForm];
@@ -63,15 +65,13 @@
         [item setToolTip:@"Status"];
         [statusBox setCornerRadius:4.0];
         [item setView:statusBox];
-        [item setMinSize:(NSSize){40.0, [statusBox frame].size.height}];
-        [item setMaxSize:[statusBox frame].size];
     }
     else if ([itemIdentifier isEqualToString:@"FixedWidthItemIdentifier"])
     {
-        // This keeps the status centered unless the window is small, at which point it shrinks out of the way
+        // This is an invisible item with the same sizing behaviour as the menu, to keep the status centered
         NSView *empty = [[[NSView alloc] initWithFrame:[availableServersMenu frame]] autorelease];
         [item setView:empty];
-        [item setMinSize:(NSSize){0.0, [empty frame].size.height}];
+        [item setMinSize:(NSSize){[empty frame].size.width / 3.0, [empty frame].size.height}];
         [item setMaxSize:[empty frame].size];
     }
     else
