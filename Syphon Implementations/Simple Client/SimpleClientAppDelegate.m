@@ -35,6 +35,11 @@
 
 @implementation SimpleClientAppDelegate
 
++ (NSSet *)keyPathsForValuesAffectingStatus
+{
+    return [NSSet setWithObjects:@"frameWidth", @"frameHeight", @"FPS", @"selectedServerDescriptions", nil];
+}
+
 - (void)dealloc
 {
     [selectedServerDescriptions release];
@@ -46,6 +51,18 @@
 @synthesize frameWidth;
 
 @synthesize frameHeight;
+
+- (NSString *)status
+{
+    if (self.frameWidth && self.frameHeight)
+    {
+        return [NSString stringWithFormat:@"%u x %u : %u FPS", self.frameWidth, self.frameHeight, self.FPS];
+    }
+    else
+    {
+        return @"--";
+    }
+}
 
 - (BOOL)applicationShouldTerminateAfterLastWindowClosed:(NSApplication *)theApplication
 {

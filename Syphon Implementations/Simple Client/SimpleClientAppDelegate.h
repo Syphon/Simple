@@ -37,8 +37,7 @@
 	SyphonClient* syClient;
 	IBOutlet NSArrayController *availableServersController;
 	IBOutlet SimpleClientGLView* glView;
-	// useful for getting the last selected server
-//	NSString* selectedServersUUID;
+    
     NSArray *selectedServerDescriptions;
 	
 	NSTimeInterval fpsStart;
@@ -47,11 +46,9 @@
 	NSUInteger frameWidth;
 	NSUInteger frameHeight;
 }
-//@property (readwrite, copy) NSString* selectedServersUUID;
 @property (readwrite, retain) NSArray *selectedServerDescriptions;
+@property (readonly) NSString *status; // "frameWidth x frameHeight : FPS" or "--" if no server
 @property (assign) NSUInteger FPS;
 @property (readwrite, assign) NSUInteger frameWidth;
 @property (readwrite, assign) NSUInteger frameHeight;
-// Actions
-//- (IBAction) setServer:(id)sender;
 @end
