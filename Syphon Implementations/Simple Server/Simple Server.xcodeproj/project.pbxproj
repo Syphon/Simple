@@ -65,7 +65,6 @@
 		1BA0623F11D95F28003BE5D6 /* SimpleServerGLView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SimpleServerGLView.h; sourceTree = "<group>"; };
 		1BA0624011D95F28003BE5D6 /* SimpleServerGLView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SimpleServerGLView.m; sourceTree = "<group>"; };
 		1BA0624611D95F5D003BE5D6 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
-		1BA0626211D96509003BE5D6 /* SyphonTempIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = SyphonTempIcon.png; sourceTree = "<group>"; };
 		1DDD58150DA1D0A300B32029 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = English.lproj/MainMenu.xib; sourceTree = "<group>"; };
 		256AC3D80F4B6AC300CF3369 /* Simple_ServerAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Simple_ServerAppDelegate.h; sourceTree = "<group>"; };
 		256AC3D90F4B6AC300CF3369 /* Simple_ServerAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Simple_ServerAppDelegate.m; sourceTree = "<group>"; };
@@ -173,7 +172,6 @@
 			children = (
 				1B4F31D5120FC34D00E90119 /* icon.icns */,
 				1B90067811DAE7EE000603FD /* ServerDemo.qtz */,
-				1BA0626211D96509003BE5D6 /* SyphonTempIcon.png */,
 				8D1107310486CEB800E47090 /* Simple_Server-Info.plist */,
 				089C165CFE840E0CC02AAC07 /* InfoPlist.strings */,
 				1DDD58140DA1D0A300B32029 /* MainMenu.xib */,
