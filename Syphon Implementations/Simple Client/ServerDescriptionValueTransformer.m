@@ -40,16 +40,36 @@
 	{
         NSMutableArray *transformed = [NSMutableArray arrayWithCapacity:[value count]];
         for (NSDictionary *description in value) {
+            
             // These are the keys we can use in the server description dictionary.
+            // Be prepared for either of the keys to be missing.
+            
             NSString* name = [description objectForKey:SyphonServerDescriptionNameKey];
             NSString* appName = [description objectForKey:SyphonServerDescriptionAppNameKey];
             
-            NSString *title = [NSString stringWithString:appName];
             // A server may not have a name (usually if it is the only server in an application)
-            if ([name length] > 0)
+            
+            NSString *title;
+            if ([appName length] > 0)
             {
-                title = [name stringByAppendingFormat:@" - %@", title, nil];
+                if ([name length] > 0)
+                {
+                    title = [name stringByAppendingFormat:@" - %@", appName, nil];
+                }
+                else
+                {
+                    title = appName;
+                }
             }
+            else if ([name length] > 0)
+            {
+                title = name;
+            }
+            else
+            {
+                title = @"Untitled Server";
+            }
+            
             [transformed addObject:title];
         }
         return transformed;
