@@ -56,7 +56,7 @@
 {
     if (self.frameWidth && self.frameHeight)
     {
-        return [NSString stringWithFormat:@"%u x %u : %u FPS", self.frameWidth, self.frameHeight, self.FPS];
+        return [NSString stringWithFormat:@"%lu x %lu : %lu FPS", (unsigned long)self.frameWidth, (unsigned long)self.frameHeight, (unsigned long)self.FPS];
     }
     else
     {
