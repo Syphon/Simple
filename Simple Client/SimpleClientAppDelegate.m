@@ -122,8 +122,6 @@
                 
                 NSSize imageSize = frame.textureSize;
                 
-                [frame release];
-                
                 BOOL changed = NO;
                 if (self.frameWidth != imageSize.width)
                 {
@@ -140,30 +138,33 @@
                     [[glView window] setContentAspectRatio:imageSize];
                     [self resizeWindowForCurrentVideo];
                 }
-                // ...then mark our view as needing display, it will get the frame when it's ready to draw
+                // ...then update the view and mark it as needing display
+                glView.image = frame;
+
                 [glView setNeedsDisplay:YES];
+
+                // newFrameImageForContext: returns a retained image, always release it
+                [frame release];
             }];
         }];
-        
-        // Our view uses the client to draw, so keep it up to date
-        [glView setSyClient:syClient];
         
         // If we have a client we do nothing - wait until it outputs a frame
         
         // Otherwise clear the view
         if (syClient == nil)
         {
+            glView.image = nil;
+
             self.frameWidth = 0;
             self.frameHeight = 0;
+
             [glView setNeedsDisplay:YES];
         }
     }
 }
 
 - (void)applicationWillTerminate:(NSNotification *)aNotification
-{
-	[glView setSyClient:nil];
-		
+{		
 	[syClient stop];
 	[syClient release];
 	syClient = nil;

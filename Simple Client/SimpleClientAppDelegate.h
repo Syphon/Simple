@@ -30,13 +30,13 @@
 #import <Cocoa/Cocoa.h>
 
 #import <Syphon/Syphon.h>
-#import "SimpleClientGLView.h"
+#import "SimpleImageView.h"
 
 @interface SimpleClientAppDelegate : NSObject <NSApplicationDelegate, NSWindowDelegate>
 {
 	SyphonClient* syClient;
 	IBOutlet NSArrayController *availableServersController;
-	IBOutlet SimpleClientGLView* glView;
+	IBOutlet SimpleImageView* glView;
     
     NSArray *selectedServerDescriptions;
 	

@@ -28,12 +28,13 @@
  */
 
 #import <Cocoa/Cocoa.h>
-#import "SimpleServerGLView.h"
+#import <Syphon/Syphon.h>
 #import "SimpleRenderer.h"
+#import "SimpleImageView.h"
 
 @interface Simple_ServerAppDelegate : NSObject <NSApplicationDelegate> {
     NSWindow *window;
-	SimpleServerGLView* glView;
+	SimpleImageView* glView;
 	SyphonServer *syServer;
 	NSTimeInterval startTime;
 	SimpleRenderer *renderer;
@@ -45,8 +46,7 @@
 }
 @property (assign, nonatomic) NSUInteger FPS;
 @property (assign) IBOutlet NSWindow *window;
-@property (assign) IBOutlet SimpleServerGLView* glView;
-@property (retain) SimpleRenderer *renderer;
+@property (assign) IBOutlet SimpleImageView* glView;
 
 - (IBAction) open:(id)sender;
 @end

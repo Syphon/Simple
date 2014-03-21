@@ -36,35 +36,26 @@
 
 @synthesize FPS;
 
-@synthesize renderer;
-
 - (BOOL)applicationShouldTerminateAfterLastWindowClosed:(NSApplication *)theApplication
 {
 	return YES;
 }
 
 
-- (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
-	// We need the CGLContext to create a server. Here we get it from our
-	// NSOpenGLView
+- (void)applicationDidFinishLaunching:(NSNotification *)aNotification
+{
+	// We need the CGLContext to create a server. Here we get it from our NSOpenGLView
+
 	CGLContextObj context = [[glView openGLContext] CGLContextObj];
 	
-	// Create a server. This is our only server so we don't give it a name.
-	syServer = [[SyphonServer alloc] initWithName:nil context:context options:nil];
-	
-	// Init our renderer in the background as loading the composition takes some time
-	dispatch_async(dispatch_get_main_queue() /*(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)*/, ^{
-		
-		SimpleRenderer *newRenderer = [[SimpleRenderer alloc] initWithFile:[[NSBundle mainBundle] pathForResource:@"ServerDemo" ofType:@"qtz"] context:[[glView openGLContext] CGLContextObj]];
-		
-		// We use a simple protocol <SimpleServerTextureSource> so the view can get texture information from the renderer when it wants to draw
-		[glView setSource:newRenderer];
-		
-		[newRenderer setTextureSize:[glView frame].size];
-		
-		self.renderer = newRenderer;
-		[newRenderer release];
-	});
+	// Create a server.
+    // - This is our only server so we don't give it a name.
+    // - We create it with a depth buffer so we can render Quartz Compositions directly into it
+
+    NSDictionary *options = @{SyphonServerOptionDepthBufferResolution: @16};
+	syServer = [[SyphonServer alloc] initWithName:nil context:context options:options];
+
+    [self openFile:[[NSBundle mainBundle] URLForResource:@"ServerDemo" withExtension:@"qtz"]];
 	
 	// A terrible FPS display
 	fpsStart = [NSDate timeIntervalSinceReferenceDate];
@@ -73,21 +64,6 @@
 	lameRenderingTimer = [NSTimer timerWithTimeInterval:1.0/60.0 target:self selector:@selector(render:) userInfo:nil repeats:YES];
 	[lameRenderingTimer retain];
 	[[NSRunLoop currentRunLoop] addTimer:lameRenderingTimer forMode:NSRunLoopCommonModes];
-	
-	// We link the size of our output to the size of our view
-	[glView addObserver:self forKeyPath:@"frame" options:0 context:nil];
-}
-
-- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
-{
-	if ([keyPath isEqualToString:@"frame"])
-	{
-		[self.renderer setTextureSize:[glView frame].size];
-	}
-	else
-	{
-		[super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
-	}
 }
 
 - (void) applicationWillTerminate:(NSNotification *)notification
@@ -99,14 +75,27 @@
 // render timer
 -(void) render:(NSTimer*) aTimer
 {
-	// Render our composition
-	SimpleRenderer *theRenderer = self.renderer;
-    
-    if(theRenderer != nil)
+    if ([renderer hasNewFrame])
     {
-        [theRenderer render];
-        
+        NSSize frameSize = glView.renderSize;
+
+        // Bind the SyphonServer and render directly into it
+
+        [syServer bindToDrawFrameOfSize:frameSize];
+
+        [renderer render:frameSize];
+
+        [syServer unbindAndPublish];
+
+        // Update the view's image
+
+        SyphonImage *image = [syServer newFrameImage];
+        glView.image = image;
+        [image release];
+        [glView setNeedsDisplay:YES];
+
         // Monitor frame-rate
+
         fpsCount++;
         float elapsed = [NSDate timeIntervalSinceReferenceDate] - fpsStart;
         if (elapsed > 0.5)
@@ -115,27 +104,16 @@
             fpsCount = 0;
             fpsStart = [NSDate timeIntervalSinceReferenceDate];
         }
-        
-        // We only publish our frame if we have clients
-        if ([syServer hasClients])
-        {
-            // lockTexture just stops the renderer from drawing until we're done with it
-            [theRenderer lockTexture];
-            
-            // publish our frame to our server. We use the whole texture, but we could just publish a region of it
-            CGLLockContext(syServer.context);
-            [syServer publishFrameTexture:theRenderer.textureName
-                            textureTarget:GL_TEXTURE_RECTANGLE_EXT
-                              imageRegion:NSMakeRect(0, 0, theRenderer.textureSize.width, theRenderer.textureSize.height)
-                        textureDimensions:theRenderer.textureSize
-                                  flipped:NO];
-            CGLUnlockContext(syServer.context);
-            // let the renderer resume drawing
-            [theRenderer unlockTexture];
-        }
-        // Tell the view we have a new frame for it
-        [glView setNeedsDisplay:YES];
     }
+}
+
+- (void)openFile:(NSURL *)url
+{
+    [renderer release];
+
+    renderer = [[SimpleRenderer alloc] initWithComposition:url
+                                                   context:[glView openGLContext]
+                                               pixelFormat:[glView pixelFormat]];
 }
 
 #pragma mark User QTZ support.
@@ -150,21 +128,7 @@
      {
         if(result == NSFileHandlingPanelOKButton)
         {
-            NSString* path = [[[panel URLs] objectAtIndex:0] path];
-            
-            // Init our renderer in the background as loading the composition takes some time
-            dispatch_async(dispatch_get_main_queue(), ^{
-                
-                SimpleRenderer *newRenderer = [[SimpleRenderer alloc] initWithFile:[path stringByStandardizingPath] context:[[glView openGLContext] CGLContextObj]];
-                
-                // We use a simple protocol <SimpleServerTextureSource> so the view can get texture information from the renderer when it wants to draw
-                [glView setSource:newRenderer];
-                
-                [newRenderer setTextureSize:[glView frame].size];
-                
-                self.renderer = newRenderer;
-                [newRenderer release];
-            });                              
+            [self openFile:[[panel URLs] objectAtIndex:0]];
         }
          
      }];

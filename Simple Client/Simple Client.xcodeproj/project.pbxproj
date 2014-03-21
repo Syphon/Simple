@@ -10,7 +10,6 @@
 		1B2F51C41780DC94005F399A /* Syphon.framework in Copy Syphon Framework */ = {isa = PBXBuildFile; fileRef = 1B7168AD1780DA9100FBD98F /* Syphon.framework */; };
 		1B2F51C51780DC9C005F399A /* Syphon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1B7168AD1780DA9100FBD98F /* Syphon.framework */; };
 		1B4F31B5120FBDBA00E90119 /* icon.icns in Resources */ = {isa = PBXBuildFile; fileRef = 1B4F31B4120FBDBA00E90119 /* icon.icns */; };
-		1BB5774A11CF205C008A305F /* SimpleClientGLView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BB5774811CF205C008A305F /* SimpleClientGLView.m */; };
 		1BB5777011CF2294008A305F /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1BB5776F11CF2294008A305F /* OpenGL.framework */; };
 		1DDD58160DA1D0A300B32029 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1DDD58140DA1D0A300B32029 /* MainMenu.xib */; };
 		256AC3DA0F4B6AC300CF3369 /* SimpleClientAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 256AC3D90F4B6AC300CF3369 /* SimpleClientAppDelegate.m */; };
@@ -20,6 +19,7 @@
 		BD8BFB42122BF13E0015B2BE /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = BD8BFB41122BF13E0015B2BE /* Credits.rtf */; };
 		BDC63CDB13AFDF070097BBAD /* ToolbarDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = BDC63CDA13AFDF070097BBAD /* ToolbarDelegate.m */; };
 		BDC63CEE13AFFE830097BBAD /* ServerDescriptionValueTransformer.m in Sources */ = {isa = PBXBuildFile; fileRef = BDC63CED13AFFE830097BBAD /* ServerDescriptionValueTransformer.m */; };
+		E2D0981E18DD04F400DE623B /* SimpleImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = E2D0981D18DD04F400DE623B /* SimpleImageView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -59,8 +59,6 @@
 		13E42FB307B3F0F600E4EEF1 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = /System/Library/Frameworks/CoreData.framework; sourceTree = "<absolute>"; };
 		1B4F31B4120FBDBA00E90119 /* icon.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = icon.icns; sourceTree = "<group>"; };
 		1BB5771E11CF1EC8008A305F /* Syphon.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Syphon.xcodeproj; path = "../Syphon-Framework/Syphon.xcodeproj"; sourceTree = SOURCE_ROOT; };
-		1BB5774711CF205C008A305F /* SimpleClientGLView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SimpleClientGLView.h; sourceTree = "<group>"; };
-		1BB5774811CF205C008A305F /* SimpleClientGLView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SimpleClientGLView.m; sourceTree = "<group>"; };
 		1BB5776F11CF2294008A305F /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
 		1DDD58150DA1D0A300B32029 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = English.lproj/MainMenu.xib; sourceTree = "<group>"; };
 		256AC3D80F4B6AC300CF3369 /* SimpleClientAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SimpleClientAppDelegate.h; sourceTree = "<group>"; };
@@ -76,6 +74,8 @@
 		BDC63CDA13AFDF070097BBAD /* ToolbarDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ToolbarDelegate.m; sourceTree = "<group>"; };
 		BDC63CEC13AFFE830097BBAD /* ServerDescriptionValueTransformer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ServerDescriptionValueTransformer.h; sourceTree = "<group>"; };
 		BDC63CED13AFFE830097BBAD /* ServerDescriptionValueTransformer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ServerDescriptionValueTransformer.m; sourceTree = "<group>"; };
+		E2D0981C18DD04F400DE623B /* SimpleImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SimpleImageView.h; path = ../Common/SimpleImageView.h; sourceTree = "<group>"; };
+		E2D0981D18DD04F400DE623B /* SimpleImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SimpleImageView.m; path = ../Common/SimpleImageView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -97,10 +97,10 @@
 			children = (
 				256AC3D80F4B6AC300CF3369 /* SimpleClientAppDelegate.h */,
 				256AC3D90F4B6AC300CF3369 /* SimpleClientAppDelegate.m */,
+				E2D0981C18DD04F400DE623B /* SimpleImageView.h */,
+				E2D0981D18DD04F400DE623B /* SimpleImageView.m */,
 				BDC63CD913AFDF070097BBAD /* ToolbarDelegate.h */,
 				BDC63CDA13AFDF070097BBAD /* ToolbarDelegate.m */,
-				1BB5774711CF205C008A305F /* SimpleClientGLView.h */,
-				1BB5774811CF205C008A305F /* SimpleClientGLView.m */,
 				BDC63CEC13AFFE830097BBAD /* ServerDescriptionValueTransformer.h */,
 				BDC63CED13AFFE830097BBAD /* ServerDescriptionValueTransformer.m */,
 			);
@@ -272,9 +272,9 @@
 			files = (
 				8D11072D0486CEB800E47090 /* main.m in Sources */,
 				256AC3DA0F4B6AC300CF3369 /* SimpleClientAppDelegate.m in Sources */,
-				1BB5774A11CF205C008A305F /* SimpleClientGLView.m in Sources */,
 				BDC63CDB13AFDF070097BBAD /* ToolbarDelegate.m in Sources */,
 				BDC63CEE13AFFE830097BBAD /* ServerDescriptionValueTransformer.m in Sources */,
+				E2D0981E18DD04F400DE623B /* SimpleImageView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

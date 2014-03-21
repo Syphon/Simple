@@ -32,26 +32,14 @@
 #import <Cocoa/Cocoa.h>
 #import <Quartz/Quartz.h>
 #import <OpenGL/OpenGL.h>
-#import <libkern/OSAtomic.h> // For OSSpinLock
-#import "SimpleServerTextureSource.h"
 
-@interface SimpleRenderer : NSObject <SimpleServerTextureSource> {
+@interface SimpleRenderer : NSObject {
 @private
 	CGLContextObj cgl_ctx;
 	QCRenderer *_renderer;
-	BOOL _needsRebuild;
-	BOOL _rendersComposition;
-	NSSize _currentSize;
-	NSSize _requestedSize;
-	GLuint _texture;
-	GLuint _fbo;
-	GLuint _depthBuffer;
 	NSTimeInterval _start;
-//	pthread_mutex_t _lock;
 }
-- (id)initWithFile:(NSString *)path context:(CGLContextObj)context;
-- (BOOL)render;
-- (void)setTextureSize:(NSSize)size;
-@property (readonly) QCRenderer *QCRenderer;
-@property (readwrite, assign) BOOL rendersComposition;
+- (id)initWithComposition:(NSURL *)url context:(NSOpenGLContext *)context pixelFormat:(NSOpenGLPixelFormat *)format;
+- (BOOL)hasNewFrame;
+- (void)render:(NSSize)dimensions;
 @end
