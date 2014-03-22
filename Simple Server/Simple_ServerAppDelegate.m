@@ -75,8 +75,12 @@
 // render timer
 -(void) render:(NSTimer*) aTimer
 {
-    if ([renderer hasNewFrame])
+    if (renderer.hasNewFrame)
     {
+        // It's quite likely you won't want to tie your renderer to the view's
+        // dimensions, but this is a useful way to show a server can vary its
+        // frame size (just resize the window)
+
         NSSize frameSize = glView.renderSize;
 
         // Bind the SyphonServer and render directly into it
@@ -90,8 +94,12 @@
         // Update the view's image
 
         SyphonImage *image = [syServer newFrameImage];
+
         glView.image = image;
+
+        // newFrameImage returns a retained image, always release it
         [image release];
+
         [glView setNeedsDisplay:YES];
 
         // Monitor frame-rate
@@ -109,6 +117,7 @@
 
 - (void)openFile:(NSURL *)url
 {
+    glView.image = nil;
     [renderer release];
 
     renderer = [[SimpleRenderer alloc] initWithComposition:url
@@ -124,7 +133,7 @@
     [panel setAllowedFileTypes:[NSArray arrayWithObject:@"qtz"]];
     [panel setAllowsMultipleSelection:NO];
     
-    [panel beginSheetModalForWindow:[glView window] completionHandler:^(NSInteger result)
+    [panel beginSheetModalForWindow:self.window completionHandler:^(NSInteger result)
      {
         if(result == NSFileHandlingPanelOKButton)
         {

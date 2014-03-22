@@ -40,6 +40,6 @@
 	NSTimeInterval _start;
 }
 - (id)initWithComposition:(NSURL *)url context:(NSOpenGLContext *)context pixelFormat:(NSOpenGLPixelFormat *)format;
-- (BOOL)hasNewFrame;
+@property (readonly) BOOL hasNewFrame;
 - (void)render:(NSSize)dimensions;
 @end
