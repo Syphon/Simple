@@ -49,6 +49,12 @@
     }
 }
 
+- (void)dealloc
+{
+    [_image release];
+    [super dealloc];
+}
+
 - (void)reshape
 {
     self.needsReshape = YES;
