@@ -36,7 +36,6 @@
     NSWindow *window;
 	SimpleImageView* glView;
 	SyphonServer *syServer;
-	NSTimeInterval startTime;
 	SimpleRenderer *renderer;
 	NSTimer* lameRenderingTimer;	//yea, should use display link but this is a demo.
 	
