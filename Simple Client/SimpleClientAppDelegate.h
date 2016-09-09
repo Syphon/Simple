@@ -48,7 +48,7 @@
 }
 @property (readwrite, retain) NSArray *selectedServerDescriptions;
 @property (readonly) NSString *status; // "frameWidth x frameHeight : FPS" or "--" if no server
-@property (assign) NSUInteger FPS;
+@property (readwrite, assign) NSUInteger FPS;
 @property (readwrite, assign) NSUInteger frameWidth;
 @property (readwrite, assign) NSUInteger frameHeight;
 @end
