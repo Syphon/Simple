@@ -101,7 +101,9 @@
         fpsStart = [NSDate timeIntervalSinceReferenceDate];
         fpsCount = 0;
         self.FPS = 0;
-        syClient = [[SyphonClient alloc] initWithServerDescription:[descriptions lastObject] options:nil newFrameHandler:^(SyphonClient *client) {
+        syClient = [[SyphonClient alloc] initWithServerDescription:[descriptions lastObject]
+                                                           context:[[glView openGLContext] CGLContextObj]
+                                                           options:nil newFrameHandler:^(SyphonClient *client) {
             // This gets called whenever the client receives a new frame.
             
             // The new-frame handler could be called from any thread, but because we update our UI we have
@@ -118,7 +120,7 @@
                     fpsCount = 0;
                 }
                 // ...then we check to see if our dimensions display or window shape needs to be updated
-                SyphonImage *frame = [client newFrameImageForContext:[[glView openGLContext] CGLContextObj]];
+                SyphonImage *frame = [client newFrameImage];
                 
                 NSSize imageSize = frame.textureSize;
                 
