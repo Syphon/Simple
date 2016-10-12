@@ -37,7 +37,7 @@
 
 + (NSSet *)keyPathsForValuesAffectingStatus
 {
-    return [NSSet setWithObjects:@"frameWidth", @"frameHeight", @"FPS", @"selectedServerDescriptions", nil];
+    return [NSSet setWithObjects:@"frameWidth", @"frameHeight", @"FPS", @"selectedServerDescriptions", @"view.error", nil];
 }
 
 - (void)dealloc
@@ -54,7 +54,11 @@
 
 - (NSString *)status
 {
-    if (self.frameWidth && self.frameHeight)
+    if (self.view.error)
+    {
+        return self.view.error.localizedDescription;
+    }
+    else if (self.frameWidth && self.frameHeight)
     {
         return [NSString stringWithFormat:@"%lu x %lu : %lu FPS", (unsigned long)self.frameWidth, (unsigned long)self.frameHeight, (unsigned long)self.FPS];
     }
@@ -78,8 +82,8 @@
     // Slightly weird binding here, if anyone can neatly and non-weirdly improve on this then feel free...
     [self bind:@"selectedServerDescriptions" toObject:availableServersController withKeyPath:@"selectedObjects" options:nil];
     
-    [[glView window] setContentMinSize:(NSSize){400.0,300.0}];
-	[[glView window] setDelegate:self];
+    [[self.view window] setContentMinSize:(NSSize){400.0,300.0}];
+	[[self.view window] setDelegate:self];
 }
 
 - (NSArray *)selectedServerDescriptions
@@ -91,76 +95,82 @@
 {
     if (![descriptions isEqualToArray:selectedServerDescriptions])
     {
+        NSString *currentUUID = [selectedServerDescriptions lastObject][SyphonServerDescriptionUUIDKey];
+        NSString *newUUID = [descriptions lastObject][SyphonServerDescriptionUUIDKey];
+        BOOL uuidChange = newUUID && ![currentUUID isEqualToString:newUUID];
         [descriptions retain];
         [selectedServerDescriptions release];
         selectedServerDescriptions = descriptions;
-        // Stop our current client
-        [syClient stop];
-        [syClient release];
-        // Reset our terrible FPS display
-        fpsStart = [NSDate timeIntervalSinceReferenceDate];
-        fpsCount = 0;
-        self.FPS = 0;
-        syClient = [[SyphonClient alloc] initWithServerDescription:[descriptions lastObject]
-                                                           context:[[glView openGLContext] CGLContextObj]
-                                                           options:nil newFrameHandler:^(SyphonClient *client) {
-            // This gets called whenever the client receives a new frame.
-            
-            // The new-frame handler could be called from any thread, but because we update our UI we have
-            // to do this on the main thread.
-            
-            [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-                // First we track our framerate...
-                fpsCount++;
-                float elapsed = [NSDate timeIntervalSinceReferenceDate] - fpsStart;
-                if (elapsed > 1.0)
-                {
-                    self.FPS = ceilf(fpsCount / elapsed);
-                    fpsStart = [NSDate timeIntervalSinceReferenceDate];
-                    fpsCount = 0;
-                }
-                // ...then we check to see if our dimensions display or window shape needs to be updated
-                SyphonImage *frame = [client newFrameImage];
-                
-                NSSize imageSize = frame.textureSize;
-                
-                BOOL changed = NO;
-                if (self.frameWidth != imageSize.width)
-                {
-                    changed = YES;
-                    self.frameWidth = imageSize.width;
-                }
-                if (self.frameHeight != imageSize.height)
-                {
-                    changed = YES;
-                    self.frameHeight = imageSize.height;
-                }
-                if (changed)
-                {
-                    [[glView window] setContentAspectRatio:imageSize];
-                    [self resizeWindowForCurrentVideo];
-                }
-                // ...then update the view and mark it as needing display
-                glView.image = frame;
-
-                [glView setNeedsDisplay:YES];
-
-                // newFrameImageForContext: returns a retained image, always release it
-                [frame release];
-            }];
-        }];
-        
-        // If we have a client we do nothing - wait until it outputs a frame
-        
-        // Otherwise clear the view
-        if (syClient == nil)
+        if (!newUUID || !currentUUID || uuidChange)
         {
-            glView.image = nil;
+            // Stop our current client
+            [syClient stop];
+            [syClient release];
+            // Reset our terrible FPS display
+            fpsStart = [NSDate timeIntervalSinceReferenceDate];
+            fpsCount = 0;
+            self.FPS = 0;
+            syClient = [[SyphonClient alloc] initWithServerDescription:[descriptions lastObject]
+                                                               context:[[self.view openGLContext] CGLContextObj]
+                                                               options:nil newFrameHandler:^(SyphonClient *client) {
+                // This gets called whenever the client receives a new frame.
+                
+                // The new-frame handler could be called from any thread, but because we update our UI we have
+                // to do this on the main thread.
+                
+                [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+                    // First we track our framerate...
+                    fpsCount++;
+                    float elapsed = [NSDate timeIntervalSinceReferenceDate] - fpsStart;
+                    if (elapsed > 1.0)
+                    {
+                        self.FPS = ceilf(fpsCount / elapsed);
+                        fpsStart = [NSDate timeIntervalSinceReferenceDate];
+                        fpsCount = 0;
+                    }
+                    // ...then we check to see if our dimensions display or window shape needs to be updated
+                    SyphonImage *frame = [client newFrameImage];
 
-            self.frameWidth = 0;
-            self.frameHeight = 0;
+                    NSSize imageSize = frame.textureSize;
+                    
+                    BOOL changed = NO;
+                    if (self.frameWidth != imageSize.width)
+                    {
+                        changed = YES;
+                        self.frameWidth = imageSize.width;
+                    }
+                    if (self.frameHeight != imageSize.height)
+                    {
+                        changed = YES;
+                        self.frameHeight = imageSize.height;
+                    }
+                    if (changed)
+                    {
+                        [[self.view window] setContentAspectRatio:imageSize];
+                        [self resizeWindowForCurrentVideo];
+                    }
+                    // ...then update the view and mark it as needing display
+                    self.view.image = frame;
 
-            [glView setNeedsDisplay:YES];
+                    [self.view setNeedsDisplay:YES];
+
+                    // newFrameImageForContext: returns a retained image, always release it
+                    [frame release];
+                }];
+            }];
+            
+            // If we have a client we do nothing - wait until it outputs a frame
+            
+            // Otherwise clear the view
+            if (syClient == nil)
+            {
+                self.view.image = nil;
+
+                self.frameWidth = 0;
+                self.frameHeight = 0;
+
+                [self.view setNeedsDisplay:YES];
+            }
         }
     }
 }
@@ -190,7 +200,7 @@
 - (NSRect)frameRectForContentSize:(NSSize)contentSize
 {
     // Make sure we are at least as big as the window's minimum content size
-	NSSize minContentSize = [[glView window] contentMinSize];
+	NSSize minContentSize = [[self.view window] contentMinSize];
 	if (contentSize.height < minContentSize.height)
 	{
 		float scale = minContentSize.height / contentSize.height;
@@ -204,15 +214,15 @@
 		contentSize.width *= scale;
 	}
     
-    NSRect contentRect = (NSRect){[[glView window] frame].origin, contentSize};
-    NSRect frameRect = [[glView window] frameRectForContentRect:contentRect];
+    NSRect contentRect = (NSRect){[[self.view window] frame].origin, contentSize};
+    NSRect frameRect = [[self.view window] frameRectForContentRect:contentRect];
     
     // Move the window up (or down) so it remains rooted at the top left
-    float delta = [[glView window] frame].size.height - frameRect.size.height;
+    float delta = [[self.view window] frame].size.height - frameRect.size.height;
     frameRect.origin.y += delta;
     
     // Attempt to remain on-screen
-    NSRect available = [[[glView window] screen] visibleFrame];
+    NSRect available = [[[self.view window] screen] visibleFrame];
     if ((frameRect.origin.x + frameRect.size.width) > available.size.width)
     {
         frameRect.origin.x = available.size.width - frameRect.size.width;
@@ -228,7 +238,7 @@
 - (NSRect)windowWillUseStandardFrame:(NSWindow *)window defaultFrame:(NSRect)newFrame
 {
 	// We get this when the user hits the zoom box, if we're not already zoomed
-	if ([window isEqual:[glView window]])
+	if ([window isEqual:[self.view window]])
 	{
 		// Resize to the current video dimensions
         return [self frameRectForContentSize:[self windowContentSizeForCurrentVideo]];        
@@ -243,7 +253,7 @@
 {
     // Resize to the correct aspect ratio, keeping as close as possible to our current dimensions
     NSSize wantedContentSize = [self windowContentSizeForCurrentVideo];
-    NSSize currentSize = [[[glView window] contentView] frame].size;
+    NSSize currentSize = [[[self.view window] contentView] frame].size;
     float wr = wantedContentSize.width / currentSize.width;
     float hr = wantedContentSize.height / currentSize.height;
     NSUInteger widthScaledToHeight = wantedContentSize.width / hr;
@@ -260,7 +270,7 @@
     }
     
     NSRect newFrame = [self frameRectForContentSize:wantedContentSize];
-    [[glView window] setFrame:newFrame display:YES animate:NO];
+    [[self.view window] setFrame:newFrame display:YES animate:NO];
 }
 
 @end

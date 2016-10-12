@@ -33,10 +33,18 @@
 @interface SimpleImageView : NSOpenGLView {
     SyphonImage *_image;
     BOOL _needsReshape;
+    NSSize _imageSize;
+    NSError *_error;
+#ifdef SYPHON_SIMPLE_PROFILE_CORE
+    GLuint _program;
+    GLuint _vao;
+    GLuint _vbo;
+#endif
 }
 @property (readwrite, strong) SyphonImage *image;
 /*
  Returns the dimensions the GL view will render at, including any adjustment for a high-resolution display
  */
 @property (readonly) NSSize renderSize;
+@property (readonly) NSError *error;
 @end

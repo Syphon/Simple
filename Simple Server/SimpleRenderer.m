@@ -28,88 +28,26 @@
  */
 
 #import "SimpleRenderer.h"
+#ifdef SYPHON_SIMPLE_PROFILE_CORE
+#import <OpenGL/gl3.h>
+#else
 #import <OpenGL/CGLMacro.h>
+#endif
 
-@implementation SimpleRenderer
-
-
-- (id)initWithComposition:(NSURL *)url context:(NSOpenGLContext *)context pixelFormat:(NSOpenGLPixelFormat *)format
-{
-	if (self = [super init])
-	{
-		cgl_ctx = CGLRetainContext([context CGLContextObj]);
-		if ([[NSFileManager defaultManager] fileExistsAtPath:[url path]])
-		{
-			_renderer = [[QCRenderer alloc] initWithOpenGLContext:context
-                                                      pixelFormat:format
-                                                             file:[url path]];
-		}
-		_start = [NSDate timeIntervalSinceReferenceDate];
-	}
-	return self;
-}
-
-- (void)destroyResources
-{
-	CGLReleaseContext(cgl_ctx);
-}
-
-- (void)finalize
-{
-	[self destroyResources];
-	[super finalize];
-}
-
-- (void)dealloc
-{
-	[self destroyResources];
-	[_renderer release];
-	[super dealloc];
-}
-
-- (BOOL)hasNewFrame
-{
-    NSTimeInterval time = [NSDate timeIntervalSinceReferenceDate] - _start;
-
-    if ([_renderer renderingTimeForTime:time arguments:nil] <= time)
-    {
-        return YES;
-    }
-    else
-    {
-        return NO;
-    }
+@implementation SimpleRenderer {
+    BOOL _started;
+    NSTimeInterval _start;
 }
 
 - (void)render:(NSSize)dimensions
 {
-	// Render our QCRenderer
-	glMatrixMode(GL_PROJECTION);
-	glPushMatrix();
-	glLoadIdentity();
-
-	glMatrixMode(GL_MODELVIEW);
-	glPushMatrix();
-	glLoadIdentity();
-	    
-	NSTimeInterval time = [NSDate timeIntervalSinceReferenceDate] - _start;
-
-    if (_renderer)
+    if (!_started)
     {
-        [_renderer renderAtTime:time arguments:nil];
+        _start = [NSDate timeIntervalSinceReferenceDate];
+        _started = YES;
     }
-    else
-    {
-		glClearColor(0.0, 0.0, 0.0, 0.0);
-		glClear(GL_COLOR_BUFFER_BIT);
-	}
-
-	// Restore OpenGL states
-	glMatrixMode(GL_MODELVIEW);
-	glPopMatrix();
-	
-	glMatrixMode(GL_PROJECTION);
-	glPopMatrix();
+    GLfloat grad = 0.4 * (1.2 + sin(2 * M_PI * 1.0/4.0 * ([NSDate timeIntervalSinceReferenceDate] - _start)));
+    glClearColor(grad, grad, grad, 1.0);
+    glClear(GL_COLOR_BUFFER_BIT);
 }
-
 @end

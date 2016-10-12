@@ -36,8 +36,7 @@
 {
 	SyphonClient* syClient;
 	IBOutlet NSArrayController *availableServersController;
-	IBOutlet SimpleImageView* glView;
-    
+
     NSArray *selectedServerDescriptions;
 	
 	NSTimeInterval fpsStart;
@@ -46,6 +45,7 @@
 	NSUInteger frameWidth;
 	NSUInteger frameHeight;
 }
+@property (assign) IBOutlet SimpleImageView *view;
 @property (readwrite, retain) NSArray *selectedServerDescriptions;
 @property (readonly) NSString *status; // "frameWidth x frameHeight : FPS" or "--" if no server
 @property (readwrite, assign) NSUInteger FPS;

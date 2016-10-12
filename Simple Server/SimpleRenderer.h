@@ -29,17 +29,8 @@
 
 //  Renders a QC Composition into an FBO and exposes the resulting texture
 
-#import <Cocoa/Cocoa.h>
-#import <Quartz/Quartz.h>
-#import <OpenGL/OpenGL.h>
+#import <Foundation/Foundation.h>
 
-@interface SimpleRenderer : NSObject {
-@private
-	CGLContextObj cgl_ctx;
-	QCRenderer *_renderer;
-	NSTimeInterval _start;
-}
-- (id)initWithComposition:(NSURL *)url context:(NSOpenGLContext *)context pixelFormat:(NSOpenGLPixelFormat *)format;
-@property (readonly) BOOL hasNewFrame;
+@interface SimpleRenderer : NSObject
 - (void)render:(NSSize)dimensions;
 @end

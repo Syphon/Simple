@@ -1,8 +1,8 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="10117" systemVersion="15G1004" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="11201" systemVersion="16A323" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="10117"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="11201"/>
         <capability name="box content view" minToolsVersion="7.0"/>
     </dependencies>
     <objects>
@@ -698,7 +698,7 @@
         <customObject id="494" customClass="SimpleClientAppDelegate">
             <connections>
                 <outlet property="availableServersController" destination="633" id="664"/>
-                <outlet property="glView" destination="535" id="545"/>
+                <outlet property="view" destination="535" id="R2O-R4-2ET"/>
             </connections>
         </customObject>
         <customObject id="420" customClass="NSFontManager"/>
@@ -709,7 +709,7 @@
             </connections>
         </customObject>
         <arrayController objectClassName="NSDictionary" editable="NO" id="633" userLabel="Available Servers Array Controller"/>
-        <box title="Box" boxType="custom" borderType="line" titlePosition="noTitle" id="665">
+        <box boxType="custom" borderType="line" title="Box" titlePosition="noTitle" id="665">
             <rect key="frame" x="0.0" y="0.0" width="130" height="18"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
             <view key="contentView" id="sa7-r5-qHk">
@@ -730,7 +730,6 @@
                     </textField>
                 </subviews>
             </view>
-            <color key="borderColor" white="0.0" alpha="0.41999999999999998" colorSpace="calibratedWhite"/>
             <color key="fillColor" red="0.7019608021" green="0.7019608021" blue="0.5" alpha="1" colorSpace="calibratedRGB"/>
         </box>
     </objects>

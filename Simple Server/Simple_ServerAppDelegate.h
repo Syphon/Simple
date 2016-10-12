@@ -43,9 +43,7 @@
 	NSTimeInterval fpsStart;
 	NSUInteger fpsCount;
 }
-@property (assign, nonatomic) NSUInteger FPS;
+@property (assign, nonatomic, readwrite) NSUInteger FPS;
 @property (assign) IBOutlet NSWindow *window;
 @property (assign) IBOutlet SimpleImageView* glView;
-
-- (IBAction) open:(id)sender;
 @end
