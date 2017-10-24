@@ -50,10 +50,8 @@
 	
 	// Create a server.
     // - This is our only server so we don't give it a name.
-    // - We create it with a depth buffer so we can render Quartz Compositions directly into it
 
-    NSDictionary *options = @{SyphonServerOptionDepthBufferResolution: @16, SyphonServerOptionAntialiasSampleCount: @16};
-	syServer = [[SyphonServer alloc] initWithName:nil context:context options:options];
+	syServer = [[SyphonServer alloc] initWithName:nil context:context options:nil];
 
     renderer = [[SimpleRenderer alloc] init];
 
