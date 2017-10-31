@@ -34,19 +34,12 @@
 #import <OpenGL/CGLMacro.h>
 #endif
 
-@implementation SimpleRenderer {
-    BOOL _started;
-    NSTimeInterval _start;
-}
+@implementation SimpleRenderer
 
 - (void)render:(NSSize)dimensions
 {
-    if (!_started)
-    {
-        _start = [NSDate timeIntervalSinceReferenceDate];
-        _started = YES;
-    }
-    GLfloat grad = 0.4 * (1.2 + sin(2 * M_PI * 1.0/4.0 * ([NSDate timeIntervalSinceReferenceDate] - _start)));
+    // TODO: a more interesting animation
+    GLfloat grad = 0.4 * (1.2 + sin(2 * M_PI * 1.0/4.0 * [NSDate timeIntervalSinceReferenceDate]));
     glClearColor(grad, grad, grad, 1.0);
     glClear(GL_COLOR_BUFFER_BIT);
 }
