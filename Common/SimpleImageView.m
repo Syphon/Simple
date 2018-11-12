@@ -28,18 +28,13 @@
  */
 
 #import "SimpleImageView.h"
-#ifdef SYPHON_SIMPLE_PROFILE_CORE
 #import <OpenGL/gl3.h>
-#else
-#import <OpenGL/CGLMacro.h>
-#endif
 
 @interface SimpleImageView ()
 @property (readwrite) BOOL needsReshape;
 @property (readwrite, retain) NSError *error;
 @end
 
-#ifdef SYPHON_SIMPLE_PROFILE_CORE
 static const char *vertex = "#version 150\n\
 in vec2 vertCoord;\
 in vec2 texCoord;\
@@ -56,7 +51,6 @@ out vec4 color;\
 void main() {\
     color = texture(tex, fragTexCoord);\
 }";
-#endif
 
 @implementation SimpleImageView
 
@@ -71,7 +65,6 @@ void main() {\
 
 - (void)awakeFromNib
 {
-#ifdef SYPHON_SIMPLE_PROFILE_CORE
     NSOpenGLPixelFormatAttribute attrs[] =
     {
         NSOpenGLPFADoubleBuffer,
@@ -91,7 +84,6 @@ void main() {\
 
     [pixelFormat release];
     [context release];
-#endif
 
     self.needsReshape = YES;
     if ([NSView instancesRespondToSelector:@selector(setWantsBestResolutionOpenGLSurface:)])
@@ -105,7 +97,6 @@ void main() {\
 
 - (void)dealloc
 {
-#ifdef SYPHON_SIMPLE_PROFILE_CORE
     if (_program)
     {
         glDeleteProgram(_program);
@@ -118,7 +109,6 @@ void main() {\
     {
         glDeleteBuffers(1, &_vbo);
     }
-#endif
     [_image release];
     [_error release];
     [super dealloc];
@@ -130,7 +120,7 @@ void main() {\
 
     const GLint on = 1;
     [[self openGLContext] setValues:&on forParameter:NSOpenGLCPSwapInterval];
-#ifdef SYPHON_SIMPLE_PROFILE_CORE
+
     GLuint vertShader = [self compileShader:vertex ofType:GL_VERTEX_SHADER];
     GLuint fragShader = [self compileShader:frag ofType:GL_FRAGMENT_SHADER];
 
@@ -190,7 +180,6 @@ void main() {\
     {
         self.error = [[self class] openGLError];
     }
-#endif
 }
 
 - (void)reshape
@@ -215,27 +204,12 @@ void main() {\
 
     BOOL changed = self.needsReshape || !NSEqualSizes(_imageSize, image.textureSize);
 
-#ifndef SYPHON_SIMPLE_PROFILE_CORE
-    CGLContextObj cgl_ctx = [[self openGLContext] CGLContextObj];
-#endif
-
     if (self.needsReshape)
     {
         NSSize frameSize = self.renderSize;
 
         glViewport(0, 0, frameSize.width, frameSize.height);
 
-#ifndef SYPHON_SIMPLE_PROFILE_CORE
-        // Setup OpenGL states
-        glMatrixMode(GL_PROJECTION);
-        glLoadIdentity();
-        glOrtho(0.0, frameSize.width, 0.0, frameSize.height, -1, 1);
-
-        glMatrixMode(GL_MODELVIEW);
-        glLoadIdentity();
-
-        glTranslated(frameSize.width * 0.5, frameSize.height * 0.5, 0.0);
-#endif
         [[self openGLContext] update];
 
         self.needsReshape = NO;
@@ -244,7 +218,7 @@ void main() {\
     if (image && changed)
     {
         _imageSize = image.textureSize;
-#ifdef SYPHON_SIMPLE_PROFILE_CORE
+
         NSSize frameSize = self.renderSize;
 
         NSSize scaled;
@@ -269,14 +243,12 @@ void main() {\
         glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
         glBindBuffer(GL_ARRAY_BUFFER, 0);
-#endif
     }
     glClearColor(0.0, 0.0, 0.0, 1.0);
     glClear(GL_COLOR_BUFFER_BIT);
 
     if (image)
     {
-#ifdef SYPHON_SIMPLE_PROFILE_CORE
         glUseProgram(_program);
         glBindTexture(GL_TEXTURE_RECTANGLE, image.textureName);
 
@@ -287,56 +259,10 @@ void main() {\
         glBindVertexArray(0);
         glBindTexture(GL_TEXTURE_RECTANGLE, 0);
         glUseProgram(0);
-#else
-        glEnable(GL_TEXTURE_RECTANGLE_EXT);
-
-        glBindTexture(GL_TEXTURE_RECTANGLE_EXT, image.textureName);
-
-        glColor4f(1.0, 1.0, 1.0, 1.0);
-
-        NSSize frameSize = self.renderSize;
-        NSSize scaled;
-        float wr = _imageSize.width / frameSize.width;
-        float hr = _imageSize.height / frameSize.height;
-        float ratio;
-        ratio = (hr < wr ? wr : hr);
-        scaled = NSMakeSize((_imageSize.width / ratio), (_imageSize.height / ratio));
-
-        GLfloat tex_coords[] =
-        {
-            0.0,                0.0,
-            _imageSize.width,  0.0,
-            _imageSize.width,  _imageSize.height,
-            0.0,                _imageSize.height
-        };
-
-        float halfw = scaled.width * 0.5;
-        float halfh = scaled.height * 0.5;
-
-        GLfloat verts[] =
-        {
-            -halfw, -halfh,
-            halfw, -halfh,
-            halfw, halfh,
-            -halfw, halfh
-        };
-
-        glEnableClientState( GL_TEXTURE_COORD_ARRAY );
-        glTexCoordPointer(2, GL_FLOAT, 0, tex_coords );
-        glEnableClientState(GL_VERTEX_ARRAY);
-        glVertexPointer(2, GL_FLOAT, 0, verts );
-        glDrawArrays( GL_TRIANGLE_FAN, 0, 4 );
-        glDisableClientState( GL_TEXTURE_COORD_ARRAY );
-        glDisableClientState(GL_VERTEX_ARRAY);
-
-        glBindTexture(GL_TEXTURE_RECTANGLE_EXT, 0);
-        glDisable(GL_TEXTURE_RECTANGLE_EXT);
-#endif
     }
     [[self openGLContext] flushBuffer];
 }
 
-#ifdef SYPHON_SIMPLE_PROFILE_CORE
 - (GLuint)compileShader:(const char *)source ofType:(GLenum)type
 {
     GLuint shader = glCreateShader(type);
@@ -354,6 +280,5 @@ void main() {\
     }
     return shader;
 }
-#endif
 
 @end

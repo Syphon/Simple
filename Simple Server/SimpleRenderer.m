@@ -28,11 +28,7 @@
  */
 
 #import "SimpleRenderer.h"
-#ifdef SYPHON_SIMPLE_PROFILE_CORE
 #import <OpenGL/gl3.h>
-#else
-#import <OpenGL/CGLMacro.h>
-#endif
 
 @implementation SimpleRenderer
 
