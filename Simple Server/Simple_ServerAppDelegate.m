@@ -29,7 +29,15 @@
 
 #import "Simple_ServerAppDelegate.h"
 
-@implementation Simple_ServerAppDelegate
+@implementation Simple_ServerAppDelegate {
+    SyphonServer *syServer;
+    SimpleRenderer *renderer;
+    NSTimer* lameRenderingTimer;    //yea, should use display link but this is a demo.
+
+    NSUInteger FPS;
+    NSTimeInterval fpsStart;
+    NSUInteger fpsCount;
+}
 
 @synthesize window;
 @synthesize glView;
@@ -50,19 +58,16 @@
 	
 	// Create a server.
     // - This is our only server so we don't give it a name.
-    // - We create it with a depth buffer so we can render Quartz Compositions directly into it
 
-    NSDictionary *options = @{SyphonServerOptionDepthBufferResolution: @16};
-	syServer = [[SyphonServer alloc] initWithName:nil context:context options:options];
+	syServer = [[SyphonServer alloc] initWithName:nil context:context options:nil];
 
-    [self openFile:[[NSBundle mainBundle] URLForResource:@"ServerDemo" withExtension:@"qtz"]];
-	
+    renderer = [[SimpleRenderer alloc] init];
+
 	// A terrible FPS display
 	fpsStart = [NSDate timeIntervalSinceReferenceDate];
 
 	// NSTimer is not ideal for drawing video, but it's easy to use
 	lameRenderingTimer = [NSTimer timerWithTimeInterval:1.0/60.0 target:self selector:@selector(render:) userInfo:nil repeats:YES];
-	[lameRenderingTimer retain];
 	[[NSRunLoop currentRunLoop] addTimer:lameRenderingTimer forMode:NSRunLoopCommonModes];
 }
 
@@ -75,71 +80,33 @@
 // render timer
 -(void) render:(NSTimer*) aTimer
 {
-    if (renderer.hasNewFrame)
+    // It's quite likely you won't want to tie your renderer to the view's
+    // dimensions, but this is a useful way to show a server can vary its
+    // frame size (just resize the window)
+    NSSize frameSize = glView.renderSize;
+
+    [syServer bindToDrawFrameOfSize:frameSize];
+
+    [renderer render:frameSize];
+
+    [syServer unbindAndPublish];
+
+    SyphonImage *image = [syServer newFrameImage];
+
+    glView.image = image;
+
+    [glView setNeedsDisplay:YES];
+
+    // Monitor frame-rate
+
+    fpsCount++;
+    float elapsed = [NSDate timeIntervalSinceReferenceDate] - fpsStart;
+    if (elapsed > 0.5)
     {
-        // It's quite likely you won't want to tie your renderer to the view's
-        // dimensions, but this is a useful way to show a server can vary its
-        // frame size (just resize the window)
-
-        NSSize frameSize = glView.renderSize;
-
-        // Bind the SyphonServer and render directly into it
-
-        [syServer bindToDrawFrameOfSize:frameSize];
-
-        [renderer render:frameSize];
-
-        [syServer unbindAndPublish];
-
-        // Update the view's image
-
-        SyphonImage *image = [syServer newFrameImage];
-
-        glView.image = image;
-
-        // newFrameImage returns a retained image, always release it
-        [image release];
-
-        [glView setNeedsDisplay:YES];
-
-        // Monitor frame-rate
-
-        fpsCount++;
-        float elapsed = [NSDate timeIntervalSinceReferenceDate] - fpsStart;
-        if (elapsed > 0.5)
-        {
-            self.FPS = fpsCount / elapsed;
-            fpsCount = 0;
-            fpsStart = [NSDate timeIntervalSinceReferenceDate];
-        }
+        self.FPS = fpsCount / elapsed;
+        fpsCount = 0;
+        fpsStart = [NSDate timeIntervalSinceReferenceDate];
     }
 }
 
-- (void)openFile:(NSURL *)url
-{
-    glView.image = nil;
-    [renderer release];
-
-    renderer = [[SimpleRenderer alloc] initWithComposition:url
-                                                   context:[glView openGLContext]
-                                               pixelFormat:[glView pixelFormat]];
-}
-
-#pragma mark User QTZ support.
-
-- (IBAction) open:(id)sender
-{
-    NSOpenPanel* panel = [NSOpenPanel openPanel];
-    [panel setAllowedFileTypes:[NSArray arrayWithObject:@"qtz"]];
-    [panel setAllowsMultipleSelection:NO];
-    
-    [panel beginSheetModalForWindow:self.window completionHandler:^(NSInteger result)
-     {
-        if(result == NSFileHandlingPanelOKButton)
-        {
-            [self openFile:[[panel URLs] objectAtIndex:0]];
-        }
-         
-     }];
-}
 @end

@@ -30,9 +30,5 @@
 #import <Foundation/Foundation.h>
 
 
-@interface ServerDescriptionValueTransformer : NSValueTransformer {
-@private
-    
-}
-
+@interface ServerDescriptionValueTransformer : NSValueTransformer
 @end

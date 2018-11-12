@@ -32,20 +32,8 @@
 #import "SimpleRenderer.h"
 #import "SimpleImageView.h"
 
-@interface Simple_ServerAppDelegate : NSObject <NSApplicationDelegate> {
-    NSWindow *window;
-	SimpleImageView* glView;
-	SyphonServer *syServer;
-	SimpleRenderer *renderer;
-	NSTimer* lameRenderingTimer;	//yea, should use display link but this is a demo.
-	
-	NSUInteger FPS;
-	NSTimeInterval fpsStart;
-	NSUInteger fpsCount;
-}
-@property (assign, nonatomic) NSUInteger FPS;
+@interface Simple_ServerAppDelegate : NSObject <NSApplicationDelegate>
+@property (assign, nonatomic, readwrite) NSUInteger FPS;
 @property (assign) IBOutlet NSWindow *window;
 @property (assign) IBOutlet SimpleImageView* glView;
-
-- (IBAction) open:(id)sender;
 @end

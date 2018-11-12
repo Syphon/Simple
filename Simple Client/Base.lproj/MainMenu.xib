@@ -1,8 +1,9 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="5053" systemVersion="13C64" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
     <dependencies>
-        <deployment defaultVersion="1090" identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="5053"/>
+        <deployment identifier="macosx"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14460.31"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="NSApplication">
@@ -11,16 +12,16 @@
             </connections>
         </customObject>
         <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
-        <customObject id="-3" userLabel="Application"/>
+        <customObject id="-3" userLabel="Application" customClass="NSObject"/>
         <menu title="AMainMenu" systemMenu="main" id="29">
             <items>
-                <menuItem title="Simple Server" id="56">
-                    <menu key="submenu" title="Simple Server" systemMenu="apple" id="57">
+                <menuItem title="Simple Client" id="56">
+                    <menu key="submenu" title="Syphon Capture" systemMenu="apple" id="57">
                         <items>
-                            <menuItem title="About Simple Server" id="58">
+                            <menuItem title="About Simple Client" id="58">
                                 <modifierMask key="keyEquivalentModifierMask"/>
                                 <connections>
-                                    <action selector="orderFrontStandardAboutPanel:" target="-2" id="596"/>
+                                    <action selector="orderFrontStandardAboutPanel:" target="-2" id="567"/>
                                 </connections>
                             </menuItem>
                             <menuItem isSeparatorItem="YES" id="236">
@@ -36,7 +37,7 @@
                             <menuItem isSeparatorItem="YES" id="144">
                                 <modifierMask key="keyEquivalentModifierMask" command="YES"/>
                             </menuItem>
-                            <menuItem title="Hide Simple Server" keyEquivalent="h" id="134">
+                            <menuItem title="Hide Simple Client" keyEquivalent="h" id="134">
                                 <connections>
                                     <action selector="hide:" target="-1" id="367"/>
                                 </connections>
@@ -55,7 +56,7 @@
                             <menuItem isSeparatorItem="YES" id="149">
                                 <modifierMask key="keyEquivalentModifierMask" command="YES"/>
                             </menuItem>
-                            <menuItem title="Quit Simple Server" keyEquivalent="q" id="136">
+                            <menuItem title="Quit Simple Client" keyEquivalent="q" id="136">
                                 <connections>
                                     <action selector="terminate:" target="-3" id="449"/>
                                 </connections>
@@ -73,7 +74,7 @@
                             </menuItem>
                             <menuItem title="Open…" keyEquivalent="o" id="72">
                                 <connections>
-                                    <action selector="open:" target="494" id="597"/>
+                                    <action selector="openDocument:" target="-1" id="374"/>
                                 </connections>
                             </menuItem>
                             <menuItem title="Open Recent" id="124">
@@ -637,7 +638,7 @@
                     <modifierMask key="keyEquivalentModifierMask"/>
                     <menu key="submenu" title="Help" systemMenu="help" id="491">
                         <items>
-                            <menuItem title="Simple Server Help" keyEquivalent="?" id="492">
+                            <menuItem title="Simple Client Help" keyEquivalent="?" id="492">
                                 <connections>
                                     <action selector="showHelp:" target="-1" id="493"/>
                                 </connections>
@@ -647,46 +648,90 @@
                 </menuItem>
             </items>
         </menu>
-        <window title="Simple Server" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" oneShot="NO" releasedWhenClosed="NO" frameAutosaveName="MainWindow" animationBehavior="default" id="371">
+        <popUpButton verticalHuggingPriority="750" id="534">
+            <rect key="frame" x="0.0" y="0.0" width="203" height="18"/>
+            <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
+            <popUpButtonCell key="cell" type="squareTextured" bezelStyle="texturedSquare" alignment="left" controlSize="small" lineBreakMode="truncatingTail" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="538">
+                <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                <font key="font" metaFont="smallSystem"/>
+                <menu key="menu" title="OtherViews" id="539">
+                    <items>
+                        <menuItem title="Item 1" id="542"/>
+                        <menuItem title="Item 2" id="541"/>
+                        <menuItem title="Item 3" id="540"/>
+                    </items>
+                </menu>
+            </popUpButtonCell>
+            <connections>
+                <binding destination="633" name="contentValues" keyPath="arrangedObjects" id="661">
+                    <dictionary key="options">
+                        <string key="NSValueTransformerName">ServerDescriptionValueTransformer</string>
+                    </dictionary>
+                </binding>
+                <binding destination="633" name="selectedIndex" keyPath="selectionIndex" previousBinding="661" id="663"/>
+            </connections>
+            <point key="canvasLocation" x="28" y="39"/>
+        </popUpButton>
+        <window title="Simple Client" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" frameAutosaveName="MainWindow" animationBehavior="default" id="371">
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
-            <rect key="contentRect" x="132" y="209" width="480" height="360"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="1280" height="778"/>
-            <value key="minSize" type="size" width="200" height="100"/>
+            <rect key="contentRect" x="513" y="318" width="640" height="480"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1680" height="1028"/>
+            <value key="minSize" type="size" width="400" height="300"/>
             <view key="contentView" id="372">
-                <rect key="frame" x="0.0" y="0.0" width="480" height="360"/>
+                <rect key="frame" x="0.0" y="0.0" width="640" height="480"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <openGLView colorSize="8bit_RGB_8bit_Alpha" depthSize="16bit" useAuxiliaryDepthBufferStencil="NO" useDoubleBufferingEnabled="YES" allowOffline="YES" id="533" customClass="SimpleImageView">
-                        <rect key="frame" x="0.0" y="20" width="480" height="340"/>
+                    <openGLView wantsLayer="YES" colorSize="8bit_RGB_8bit_Alpha" depthSize="16bit" useAuxiliaryDepthBufferStencil="NO" useDoubleBufferingEnabled="YES" allowOffline="YES" id="535" customClass="SimpleImageView">
+                        <rect key="frame" x="0.0" y="0.0" width="640" height="480"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                     </openGLView>
-                    <textField verticalHuggingPriority="750" id="589">
-                        <rect key="frame" x="17" y="4" width="183" height="14"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <textFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="60 FPS" id="590">
+                </subviews>
+            </view>
+            <toolbar key="toolbar" implicitIdentifier="95A3A9CD-A776-42B5-816F-4624357CCE76" allowsUserCustomization="NO" displayMode="iconOnly" sizeMode="regular" id="621">
+                <allowedToolbarItems/>
+                <defaultToolbarItems/>
+                <connections>
+                    <outlet property="delegate" destination="630" id="631"/>
+                </connections>
+            </toolbar>
+        </window>
+        <customObject id="494" customClass="SimpleClientAppDelegate">
+            <connections>
+                <outlet property="availableServersController" destination="633" id="664"/>
+                <outlet property="view" destination="535" id="R2O-R4-2ET"/>
+            </connections>
+        </customObject>
+        <customObject id="420" customClass="NSFontManager"/>
+        <customObject id="630" customClass="ToolbarDelegate">
+            <connections>
+                <outlet property="availableServersMenu" destination="534" id="632"/>
+                <outlet property="statusBox" destination="665" id="666"/>
+            </connections>
+        </customObject>
+        <arrayController objectClassName="NSDictionary" editable="NO" id="633" userLabel="Available Servers Array Controller"/>
+        <box boxType="custom" borderType="line" title="Box" titlePosition="noTitle" id="665">
+            <rect key="frame" x="0.0" y="0.0" width="130" height="18"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+            <view key="contentView" id="sa7-r5-qHk">
+                <rect key="frame" x="1" y="1" width="128" height="16"/>
+                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                <subviews>
+                    <textField verticalHuggingPriority="750" id="568" userLabel="SmallStaticText - Source: 1280 x 1020 (at 100%), 60 FPS">
+                        <rect key="frame" x="2" y="1" width="124" height="14"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                        <textFieldCell key="cell" controlSize="small" lineBreakMode="truncatingHead" truncatesLastVisibleLine="YES" sendsActionOnEndEditing="YES" alignment="center" title="1280 x 1020 : 60 FPS" usesSingleLineMode="YES" id="569">
                             <font key="font" metaFont="smallSystem"/>
-                            <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
-                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                            <color key="textColor" red="0.20000000300000001" green="0.20000000300000001" blue="0.20000000300000001" alpha="1" colorSpace="calibratedRGB"/>
+                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                         </textFieldCell>
                         <connections>
-                            <binding destination="494" name="displayPatternValue1" keyPath="FPS" id="595">
-                                <dictionary key="options">
-                                    <string key="NSDisplayPattern">%{value1}@ FPS</string>
-                                </dictionary>
-                            </binding>
+                            <binding destination="494" name="value" keyPath="status" id="683"/>
                         </connections>
                     </textField>
                 </subviews>
             </view>
-        </window>
-        <customObject id="494" customClass="Simple_ServerAppDelegate">
-            <connections>
-                <outlet property="glView" destination="533" id="534"/>
-                <outlet property="window" destination="371" id="532"/>
-            </connections>
-        </customObject>
-        <customObject id="420" customClass="NSFontManager"/>
-        <userDefaultsController representsSharedInstance="YES" id="591"/>
+            <color key="fillColor" red="0.7019608021" green="0.7019608021" blue="0.5" alpha="1" colorSpace="calibratedRGB"/>
+        </box>
     </objects>
 </document>

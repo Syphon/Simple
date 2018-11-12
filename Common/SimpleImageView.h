@@ -30,13 +30,11 @@
 #import <Cocoa/Cocoa.h>
 #import <Syphon/Syphon.h>
 
-@interface SimpleImageView : NSOpenGLView {
-    SyphonImage *_image;
-    BOOL _needsReshape;
-}
+@interface SimpleImageView : NSOpenGLView
 @property (readwrite, strong) SyphonImage *image;
 /*
  Returns the dimensions the GL view will render at, including any adjustment for a high-resolution display
  */
 @property (readonly) NSSize renderSize;
+@property (readonly) NSError *error;
 @end
