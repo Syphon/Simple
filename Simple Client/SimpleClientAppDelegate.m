@@ -33,24 +33,20 @@
 - (void)resizeWindowForCurrentVideo;
 @end
 
-@implementation SimpleClientAppDelegate
+@implementation SimpleClientAppDelegate {
+    SyphonClient* syClient;
+    IBOutlet NSArrayController *availableServersController;
+
+    NSArray *selectedServerDescriptions;
+
+    NSTimeInterval fpsStart;
+    NSUInteger fpsCount;
+}
 
 + (NSSet *)keyPathsForValuesAffectingStatus
 {
     return [NSSet setWithObjects:@"frameWidth", @"frameHeight", @"FPS", @"selectedServerDescriptions", @"view.error", nil];
 }
-
-- (void)dealloc
-{
-    [selectedServerDescriptions release];
-    [super dealloc];
-}
-
-@synthesize FPS;
-
-@synthesize frameWidth;
-
-@synthesize frameHeight;
 
 - (NSString *)status
 {
@@ -98,14 +94,12 @@
         NSString *currentUUID = [selectedServerDescriptions lastObject][SyphonServerDescriptionUUIDKey];
         NSString *newUUID = [descriptions lastObject][SyphonServerDescriptionUUIDKey];
         BOOL uuidChange = newUUID && ![currentUUID isEqualToString:newUUID];
-        [descriptions retain];
-        [selectedServerDescriptions release];
         selectedServerDescriptions = descriptions;
+
         if (!newUUID || !currentUUID || uuidChange)
         {
             // Stop our current client
             [syClient stop];
-            [syClient release];
             // Reset our terrible FPS display
             fpsStart = [NSDate timeIntervalSinceReferenceDate];
             fpsCount = 0;
@@ -120,13 +114,13 @@
                 
                 [[NSOperationQueue mainQueue] addOperationWithBlock:^{
                     // First we track our framerate...
-                    fpsCount++;
-                    float elapsed = [NSDate timeIntervalSinceReferenceDate] - fpsStart;
+                    self->fpsCount++;
+                    float elapsed = [NSDate timeIntervalSinceReferenceDate] - self->fpsStart;
                     if (elapsed > 1.0)
                     {
-                        self.FPS = ceilf(fpsCount / elapsed);
-                        fpsStart = [NSDate timeIntervalSinceReferenceDate];
-                        fpsCount = 0;
+                        self.FPS = ceilf(self->fpsCount / elapsed);
+                        self->fpsStart = [NSDate timeIntervalSinceReferenceDate];
+                        self->fpsCount = 0;
                     }
                     // ...then we check to see if our dimensions display or window shape needs to be updated
                     SyphonImage *frame = [client newFrameImage];
@@ -153,9 +147,6 @@
                     self.view.image = frame;
 
                     [self.view setNeedsDisplay:YES];
-
-                    // newFrameImageForContext: returns a retained image, always release it
-                    [frame release];
                 }];
             }];
             
@@ -178,7 +169,6 @@
 - (void)applicationWillTerminate:(NSNotification *)aNotification
 {		
 	[syClient stop];
-	[syClient release];
 	syClient = nil;
 }
 

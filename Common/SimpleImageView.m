@@ -52,9 +52,12 @@ void main() {\
     color = texture(tex, fragTexCoord);\
 }";
 
-@implementation SimpleImageView
-
-@synthesize needsReshape = _needsReshape, image = _image, error = _error;
+@implementation SimpleImageView {
+    NSSize _imageSize;
+    GLuint _program;
+    GLuint _vao;
+    GLuint _vbo;
+}
 
 + (NSError *)openGLError
 {
@@ -82,9 +85,6 @@ void main() {\
 
     [self setOpenGLContext:context];
 
-    [pixelFormat release];
-    [context release];
-
     self.needsReshape = YES;
     if ([NSView instancesRespondToSelector:@selector(setWantsBestResolutionOpenGLSurface:)])
     {
@@ -109,9 +109,6 @@ void main() {\
     {
         glDeleteBuffers(1, &_vbo);
     }
-    [_image release];
-    [_error release];
-    [super dealloc];
 }
 
 - (void)prepareOpenGL

@@ -29,7 +29,15 @@
 
 #import "Simple_ServerAppDelegate.h"
 
-@implementation Simple_ServerAppDelegate
+@implementation Simple_ServerAppDelegate {
+    SyphonServer *syServer;
+    SimpleRenderer *renderer;
+    NSTimer* lameRenderingTimer;    //yea, should use display link but this is a demo.
+
+    NSUInteger FPS;
+    NSTimeInterval fpsStart;
+    NSUInteger fpsCount;
+}
 
 @synthesize window;
 @synthesize glView;
@@ -60,7 +68,6 @@
 
 	// NSTimer is not ideal for drawing video, but it's easy to use
 	lameRenderingTimer = [NSTimer timerWithTimeInterval:1.0/60.0 target:self selector:@selector(render:) userInfo:nil repeats:YES];
-	[lameRenderingTimer retain];
 	[[NSRunLoop currentRunLoop] addTimer:lameRenderingTimer forMode:NSRunLoopCommonModes];
 }
 
@@ -87,9 +94,6 @@
     SyphonImage *image = [syServer newFrameImage];
 
     glView.image = image;
-
-    // newFrameImage returns a retained image, always release it
-    [image release];
 
     [glView setNeedsDisplay:YES];
 

@@ -27,8 +27,6 @@
     SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-//  Renders a QC Composition into an FBO and exposes the resulting texture
-
 #import <Foundation/Foundation.h>
 
 @interface SimpleRenderer : NSObject

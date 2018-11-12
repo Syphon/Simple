@@ -33,18 +33,6 @@
 #import "SimpleImageView.h"
 
 @interface SimpleClientAppDelegate : NSObject <NSApplicationDelegate, NSWindowDelegate>
-{
-	SyphonClient* syClient;
-	IBOutlet NSArrayController *availableServersController;
-
-    NSArray *selectedServerDescriptions;
-	
-	NSTimeInterval fpsStart;
-	NSUInteger fpsCount;
-	NSUInteger FPS;
-	NSUInteger frameWidth;
-	NSUInteger frameHeight;
-}
 @property (assign) IBOutlet SimpleImageView *view;
 @property (readwrite, retain) NSArray *selectedServerDescriptions;
 @property (readonly) NSString *status; // "frameWidth x frameHeight : FPS" or "--" if no server
