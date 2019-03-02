@@ -256,7 +256,7 @@
     else
     {
         wantedContentSize.width /= wr;
-        wantedContentSize.height /= wr;        
+        wantedContentSize.height /= wr;
     }
     
     NSRect newFrame = [self frameRectForContentSize:wantedContentSize];
