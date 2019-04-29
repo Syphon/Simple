@@ -53,7 +53,6 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		089C165DFE840E0CC02AAC07 /* English */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
 		13E42FB307B3F0F600E4EEF1 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = /System/Library/Frameworks/CoreData.framework; sourceTree = "<absolute>"; };
 		1B2F51B41780DB26005F399A /* Syphon.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Syphon.xcodeproj; path = "../Syphon-Framework/Syphon.xcodeproj"; sourceTree = "<group>"; };
@@ -67,10 +66,11 @@
 		29B97325FDCFA39411CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
 		8D1107310486CEB800E47090 /* Simple_Server-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Simple_Server-Info.plist"; sourceTree = "<group>"; };
 		8D1107320486CEB800E47090 /* Simple Server.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Simple Server.app"; sourceTree = BUILT_PRODUCTS_DIR; };
-		BD8BFB84122BF25E0015B2BE /* English */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; name = English; path = English.lproj/Credits.rtf; sourceTree = "<group>"; };
 		BDF04CED11F4DC6D00FF08A0 /* SimpleRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SimpleRenderer.h; sourceTree = "<group>"; };
 		BDF04CEE11F4DC6D00FF08A0 /* SimpleRenderer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SimpleRenderer.m; sourceTree = "<group>"; };
 		E24B44F32191E8580005D827 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/MainMenu.xib; sourceTree = "<group>"; };
+		E2CF0505227711AE00B8CD19 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; name = en; path = en.lproj/Credits.rtf; sourceTree = "<group>"; };
+		E2CF0506227711AE00B8CD19 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		E2D0981318DCF7AF00DE623B /* SimpleImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SimpleImageView.h; path = ../Common/SimpleImageView.h; sourceTree = "<group>"; };
 		E2D0981418DCF7AF00DE623B /* SimpleImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SimpleImageView.m; path = ../Common/SimpleImageView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -213,14 +213,14 @@
 			};
 			buildConfigurationList = C01FCF4E08A954540054247B /* Build configuration list for PBXProject "Simple Server" */;
 			compatibilityVersion = "Xcode 3.2";
-			developmentRegion = English;
+			developmentRegion = en;
 			hasScannedForEncodings = 1;
 			knownRegions = (
-				English,
-				Japanese,
-				French,
-				German,
 				Base,
+				ja,
+				fr,
+				en,
+				de,
 			);
 			mainGroup = 29B97314FDCFA39411CA2CEA /* Simple Server */;
 			projectDirPath = "";
@@ -287,7 +287,7 @@
 		089C165CFE840E0CC02AAC07 /* InfoPlist.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
-				089C165DFE840E0CC02AAC07 /* English */,
+				E2CF0506227711AE00B8CD19 /* en */,
 			);
 			name = InfoPlist.strings;
 			sourceTree = "<group>";
@@ -303,7 +303,7 @@
 		BD8BFC5B122BF4DD0015B2BE /* Credits.rtf */ = {
 			isa = PBXVariantGroup;
 			children = (
-				BD8BFB84122BF25E0015B2BE /* English */,
+				E2CF0505227711AE00B8CD19 /* en */,
 			);
 			name = Credits.rtf;
 			sourceTree = "<group>";

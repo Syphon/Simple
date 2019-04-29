@@ -54,7 +54,6 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		089C165DFE840E0CC02AAC07 /* English */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
 		13E42FB307B3F0F600E4EEF1 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = /System/Library/Frameworks/CoreData.framework; sourceTree = "<absolute>"; };
 		1B4F31B4120FBDBA00E90119 /* icon.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = icon.icns; sourceTree = "<group>"; };
@@ -68,12 +67,13 @@
 		29B97325FDCFA39411CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
 		8D1107310486CEB800E47090 /* Simple_Client-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Simple_Client-Info.plist"; sourceTree = "<group>"; };
 		8D1107320486CEB800E47090 /* Simple Client.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Simple Client.app"; sourceTree = BUILT_PRODUCTS_DIR; };
-		BD8BFB3B122BF0FD0015B2BE /* English */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; name = English; path = English.lproj/Credits.rtf; sourceTree = "<group>"; };
 		BDC63CD913AFDF070097BBAD /* ToolbarDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ToolbarDelegate.h; sourceTree = "<group>"; };
 		BDC63CDA13AFDF070097BBAD /* ToolbarDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ToolbarDelegate.m; sourceTree = "<group>"; };
 		BDC63CEC13AFFE830097BBAD /* ServerDescriptionValueTransformer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ServerDescriptionValueTransformer.h; sourceTree = "<group>"; };
 		BDC63CED13AFFE830097BBAD /* ServerDescriptionValueTransformer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ServerDescriptionValueTransformer.m; sourceTree = "<group>"; };
 		E24B44F22191E8540005D827 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/MainMenu.xib; sourceTree = "<group>"; };
+		E2CF0508227711B300B8CD19 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; name = en; path = en.lproj/Credits.rtf; sourceTree = "<group>"; };
+		E2CF0509227711B300B8CD19 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		E2D0981C18DD04F400DE623B /* SimpleImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SimpleImageView.h; path = ../Common/SimpleImageView.h; sourceTree = "<group>"; };
 		E2D0981D18DD04F400DE623B /* SimpleImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SimpleImageView.m; path = ../Common/SimpleImageView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -218,14 +218,14 @@
 			};
 			buildConfigurationList = C01FCF4E08A954540054247B /* Build configuration list for PBXProject "Simple Client" */;
 			compatibilityVersion = "Xcode 3.2";
-			developmentRegion = English;
+			developmentRegion = en;
 			hasScannedForEncodings = 1;
 			knownRegions = (
-				English,
-				Japanese,
-				French,
-				German,
 				Base,
+				en,
+				de,
+				ja,
+				fr,
 			);
 			mainGroup = 29B97314FDCFA39411CA2CEA /* Syphon Capture */;
 			projectDirPath = "";
@@ -293,7 +293,7 @@
 		089C165CFE840E0CC02AAC07 /* InfoPlist.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
-				089C165DFE840E0CC02AAC07 /* English */,
+				E2CF0509227711B300B8CD19 /* en */,
 			);
 			name = InfoPlist.strings;
 			sourceTree = "<group>";
@@ -309,7 +309,7 @@
 		BD8BFB41122BF13E0015B2BE /* Credits.rtf */ = {
 			isa = PBXVariantGroup;
 			children = (
-				BD8BFB3B122BF0FD0015B2BE /* English */,
+				E2CF0508227711B300B8CD19 /* en */,
 			);
 			name = Credits.rtf;
 			sourceTree = "<group>";
