@@ -263,4 +263,10 @@
     [[self.view window] setFrame:newFrame display:YES animate:NO];
 }
 
+
+- (NSApplicationPresentationOptions)window:(NSWindow *)window willUseFullScreenPresentationOptions:(NSApplicationPresentationOptions)proposedOptions
+{
+    return proposedOptions | NSApplicationPresentationAutoHideToolbar;
+}
+
 @end
