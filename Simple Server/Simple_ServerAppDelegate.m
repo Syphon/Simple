@@ -85,6 +85,7 @@
     // frame size (just resize the window)
     NSSize frameSize = glView.renderSize;
 
+    [self.glView.openGLContext makeCurrentContext];
     [syServer bindToDrawFrameOfSize:frameSize];
 
     [renderer render:frameSize];
