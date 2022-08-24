@@ -31,7 +31,7 @@
 #import <Syphon/Syphon.h>
 
 @interface SimpleImageView : NSOpenGLView
-@property (readwrite, strong) SyphonImage *image;
+@property (readwrite, strong) SyphonOpenGLImage *image;
 /*
  Returns the dimensions the GL view will render at, including any adjustment for a high-resolution display
  */

@@ -34,7 +34,7 @@
 @end
 
 @implementation SimpleClientAppDelegate {
-    SyphonClient* syClient;
+    SyphonOpenGLClient* syClient;
     IBOutlet NSArrayController *availableServersController;
 
     NSArray *selectedServerDescriptions;
@@ -104,9 +104,9 @@
             fpsStart = [NSDate timeIntervalSinceReferenceDate];
             fpsCount = 0;
             self.FPS = 0;
-            syClient = [[SyphonClient alloc] initWithServerDescription:[descriptions lastObject]
+            syClient = [[SyphonOpenGLClient alloc] initWithServerDescription:[descriptions lastObject]
                                                                context:[[self.view openGLContext] CGLContextObj]
-                                                               options:nil newFrameHandler:^(SyphonClient *client) {
+                                                               options:nil newFrameHandler:^(SyphonOpenGLClient *client) {
                 // This gets called whenever the client receives a new frame.
                 
                 // The new-frame handler could be called from any thread, but because we update our UI we have
@@ -123,7 +123,7 @@
                         self->fpsCount = 0;
                     }
                     // ...then we check to see if our dimensions display or window shape needs to be updated
-                    SyphonImage *frame = [client newFrameImage];
+                    SyphonOpenGLImage *frame = [client newFrameImage];
 
                     NSSize imageSize = frame.textureSize;
                     

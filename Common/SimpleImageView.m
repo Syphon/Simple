@@ -197,7 +197,7 @@ void main() {\
 
 - (void)drawRect:(NSRect)dirtyRect
 {
-    SyphonImage *image = self.image;
+    SyphonOpenGLImage *image = self.image;
 
     BOOL changed = self.needsReshape || !NSEqualSizes(_imageSize, image.textureSize);
 

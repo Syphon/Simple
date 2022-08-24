@@ -30,7 +30,7 @@
 #import "Simple_ServerAppDelegate.h"
 
 @implementation Simple_ServerAppDelegate {
-    SyphonServer *syServer;
+    SyphonOpenGLServer *syServer;
     SimpleRenderer *renderer;
     NSTimer* lameRenderingTimer;    //yea, should use display link but this is a demo.
 
@@ -59,7 +59,7 @@
 	// Create a server.
     // - This is our only server so we don't give it a name.
 
-	syServer = [[SyphonServer alloc] initWithName:nil context:context options:nil];
+	syServer = [[SyphonOpenGLServer alloc] initWithName:nil context:context options:nil];
 
     renderer = [[SimpleRenderer alloc] init];
 
@@ -92,7 +92,7 @@
 
     [syServer unbindAndPublish];
 
-    SyphonImage *image = [syServer newFrameImage];
+    SyphonOpenGLImage *image = [syServer newFrameImage];
 
     glView.image = image;
 
