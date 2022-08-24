@@ -29,6 +29,9 @@
 
 #import "ToolbarDelegate.h"
 
+static NSString * const kStatusItemIdentifier = @"StatusItemIdentifier";
+static NSString * const kServersMenuItemIdentifier = @"ServersMenuItemIdentifier";
+
 @implementation ToolbarDelegate  {
     IBOutlet NSPopUpButton  *availableServersMenu;
     IBOutlet NSBox *statusBox;
@@ -36,32 +39,28 @@
 
 - (NSArray *)toolbarDefaultItemIdentifiers:(NSToolbar *)toolbar
 {
-    return [NSArray arrayWithObjects:@"ServersMenuItemIdentifier",
-            NSToolbarFlexibleSpaceItemIdentifier, @"StatusItemIdentifier",
-            NSToolbarFlexibleSpaceItemIdentifier, @"FixedWidthItemIdentifier", nil];
+    return @[kStatusItemIdentifier, NSToolbarFlexibleSpaceItemIdentifier, kServersMenuItemIdentifier];
 }
 
 - (NSArray *)toolbarAllowedItemIdentifiers:(NSToolbar *)toolbar
 {
-    return [NSArray arrayWithObjects:@"ServersMenuItemIdentifier", NSToolbarFlexibleSpaceItemIdentifier, @"StatusItemIdentifier", @"FixedWidthItemIdentifier", nil];
+    return @[kServersMenuItemIdentifier, NSToolbarFlexibleSpaceItemIdentifier, kStatusItemIdentifier];
 }
 
 - (NSToolbarItem *)toolbar:(NSToolbar *)toolbar itemForItemIdentifier:(NSString *)itemIdentifier willBeInsertedIntoToolbar:(BOOL)flag
 {
     NSToolbarItem *item = [[NSToolbarItem alloc] initWithItemIdentifier:itemIdentifier];
-    if ([itemIdentifier isEqualToString:@"ServersMenuItemIdentifier"])
+    if ([itemIdentifier isEqualToString:kServersMenuItemIdentifier])
     {
         [item setLabel:@"Source"];
         [item setPaletteLabel:@"Source"];
         [item setToolTip:@"Select a Syphon Server"];
         [item setView:availableServersMenu];
-        [item setMinSize:(NSSize){[availableServersMenu frame].size.width / 3.0, [availableServersMenu frame].size.height}];
-        [item setMaxSize:[availableServersMenu frame].size];
         NSMenuItem *menuForm = [[NSMenuItem alloc] init];
         [menuForm setMenu:[availableServersMenu menu]];
         [item setMenuFormRepresentation:menuForm];
     }
-    else if ([itemIdentifier isEqualToString:@"StatusItemIdentifier"])
+    else if ([itemIdentifier isEqualToString:kStatusItemIdentifier])
     {
         [item setLabel:@"Status"];
         [item setPaletteLabel:@"Status"];
@@ -69,19 +68,23 @@
         [statusBox setCornerRadius:4.0];
         [item setView:statusBox];
     }
-    else if ([itemIdentifier isEqualToString:@"FixedWidthItemIdentifier"])
-    {
-        // This is an invisible item with the same sizing behaviour as the menu, to keep the status centered
-        NSView *empty = [[NSView alloc] initWithFrame:[availableServersMenu frame]];
-        [item setView:empty];
-        [item setMinSize:(NSSize){[empty frame].size.width / 3.0, [empty frame].size.height}];
-        [item setMaxSize:[empty frame].size];
-    }
     else
     {
         NSLog(@"Unexpect toolbar item %@", itemIdentifier);
         item = nil;
     }
     return item;
+}
+
+- (void)toolbarWillAddItem:(NSNotification *)notification
+{
+	if (@available(macOS 10.14, *)) {
+		NSToolbar *toolbar = notification.object;
+		NSToolbarItem *item = notification.userInfo[@"item"];
+		if ([item.itemIdentifier isEqualToString:kStatusItemIdentifier])
+		{
+			toolbar.centeredItemIdentifier =  kStatusItemIdentifier;
+		}
+	}
 }
 @end
