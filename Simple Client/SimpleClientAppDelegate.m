@@ -78,7 +78,6 @@
     // Slightly weird binding here, if anyone can neatly and non-weirdly improve on this then feel free...
     [self bind:@"selectedServerDescriptions" toObject:availableServersController withKeyPath:@"selectedObjects" options:nil];
     
-    [[self.view window] setContentMinSize:(NSSize){400.0,300.0}];
 	[[self.view window] setDelegate:self];
 }
 
