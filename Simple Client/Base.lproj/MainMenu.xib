@@ -725,12 +725,12 @@
                 <rect key="frame" x="0.0" y="0.0" width="160" height="18"/>
                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                 <subviews>
-                    <textField focusRingType="none" verticalHuggingPriority="750" textFieldBorderShape="automatic" translatesAutoresizingMaskIntoConstraints="NO" id="568" userLabel="SmallStaticText - Source: 1280 x 1020 (at 100%), 60 FPS">
-                        <rect key="frame" x="4" y="-3" width="152" height="24"/>
+                    <textField focusRingType="none" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="568" userLabel="SmallStaticText - Source: 1280 x 1020 (at 100%), 60 FPS">
+                        <rect key="frame" x="2" y="1" width="156" height="16"/>
                         <constraints>
                             <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="120" id="uY0-dr-Uvq"/>
                         </constraints>
-                        <textFieldCell key="cell" lineBreakMode="truncatingHead" truncatesLastVisibleLine="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" alignment="center" title="1280 x 1020 : 60 FPS" usesSingleLineMode="YES" bezelStyle="round" id="569">
+                        <textFieldCell key="cell" lineBreakMode="truncatingHead" truncatesLastVisibleLine="YES" sendsActionOnEndEditing="YES" alignment="center" title="1280 x 1020 : 60 FPS" usesSingleLineMode="YES" bezelStyle="round" id="569">
                             <font key="font" metaFont="system"/>
                             <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
