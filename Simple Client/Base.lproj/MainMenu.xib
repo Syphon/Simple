@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="20037" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="25408" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="20037"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="25408"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -649,12 +649,11 @@
             </items>
             <point key="canvasLocation" x="140" y="331"/>
         </menu>
-        <popUpButton id="534">
-            <rect key="frame" x="0.0" y="0.0" width="203" height="18"/>
-            <autoresizingMask key="autoresizingMask" flexibleMaxY="YES"/>
-            <popUpButtonCell key="cell" type="squareTextured" bezelStyle="texturedSquare" alignment="left" controlSize="small" lineBreakMode="truncatingTail" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="538">
+        <popUpButton verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="534">
+            <rect key="frame" x="0.0" y="0.0" width="201" height="16"/>
+            <popUpButtonCell key="cell" type="push" bezelStyle="rounded" alignment="center" controlSize="small" lineBreakMode="truncatingTail" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="538">
                 <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                <font key="font" metaFont="message" size="11"/>
+                <font key="font" metaFont="smallSystem"/>
                 <menu key="menu" title="OtherViews" id="539">
                     <items>
                         <menuItem title="Item 1" id="542"/>
@@ -663,6 +662,9 @@
                     </items>
                 </menu>
             </popUpButtonCell>
+            <constraints>
+                <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="201" id="2BE-4o-zks"/>
+            </constraints>
             <connections>
                 <binding destination="633" name="contentValues" keyPath="arrangedObjects" id="661">
                     <dictionary key="options">
@@ -671,14 +673,14 @@
                 </binding>
                 <binding destination="633" name="selectedIndex" keyPath="selectionIndex" previousBinding="661" id="663"/>
             </connections>
-            <point key="canvasLocation" x="28" y="39"/>
+            <point key="canvasLocation" x="3" y="-59"/>
         </popUpButton>
         <window title="Simple Client" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" frameAutosaveName="MainWindow" animationBehavior="default" id="371">
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="513" y="318" width="640" height="480"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="2560" height="1415"/>
-            <value key="minSize" type="size" width="400" height="300"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="2560" height="1410"/>
+            <value key="minSize" type="size" width="640" height="480"/>
             <view key="contentView" id="372">
                 <rect key="frame" x="0.0" y="0.0" width="640" height="480"/>
                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -689,7 +691,7 @@
                     </openGLView>
                 </subviews>
             </view>
-            <toolbar key="toolbar" implicitIdentifier="95A3A9CD-A776-42B5-816F-4624357CCE76" allowsUserCustomization="NO" displayMode="iconOnly" sizeMode="regular" id="621">
+            <toolbar key="toolbar" implicitIdentifier="95A3A9CD-A776-42B5-816F-4624357CCE76" allowsUserCustomization="NO" showsBaselineSeparator="NO" displayMode="iconOnly" sizeMode="regular" id="621">
                 <allowedToolbarItems/>
                 <defaultToolbarItems/>
                 <connections>
@@ -717,21 +719,20 @@
         <arrayController objectClassName="NSDictionary" editable="NO" id="633" userLabel="Available Servers Array Controller">
             <classReference key="objectClass" className="NSDictionary"/>
         </arrayController>
-        <box boxType="custom" borderType="line" title="Box" titlePosition="noTitle" id="665">
-            <rect key="frame" x="0.0" y="0.0" width="130" height="18"/>
-            <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+        <box focusRingType="none" borderType="none" title="Box" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="665">
+            <rect key="frame" x="0.0" y="0.0" width="160" height="18"/>
             <view key="contentView" id="sa7-r5-qHk">
-                <rect key="frame" x="1" y="1" width="128" height="16"/>
+                <rect key="frame" x="0.0" y="0.0" width="160" height="18"/>
                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                 <subviews>
-                    <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="568" userLabel="SmallStaticText - Source: 1280 x 1020 (at 100%), 60 FPS">
-                        <rect key="frame" x="2" y="1" width="124" height="14"/>
+                    <textField focusRingType="none" verticalHuggingPriority="750" textFieldBorderShape="automatic" translatesAutoresizingMaskIntoConstraints="NO" id="568" userLabel="SmallStaticText - Source: 1280 x 1020 (at 100%), 60 FPS">
+                        <rect key="frame" x="4" y="-3" width="152" height="24"/>
                         <constraints>
                             <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="120" id="uY0-dr-Uvq"/>
                         </constraints>
-                        <textFieldCell key="cell" controlSize="small" lineBreakMode="truncatingHead" truncatesLastVisibleLine="YES" sendsActionOnEndEditing="YES" alignment="center" title="1280 x 1020 : 60 FPS" usesSingleLineMode="YES" id="569">
-                            <font key="font" metaFont="message" size="11"/>
-                            <color key="textColor" red="0.20000000300000001" green="0.20000000300000001" blue="0.20000000300000001" alpha="1" colorSpace="calibratedRGB"/>
+                        <textFieldCell key="cell" lineBreakMode="truncatingHead" truncatesLastVisibleLine="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" alignment="center" title="1280 x 1020 : 60 FPS" usesSingleLineMode="YES" bezelStyle="round" id="569">
+                            <font key="font" metaFont="system"/>
+                            <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                         </textFieldCell>
                         <connections>
@@ -745,8 +746,11 @@
                     <constraint firstItem="568" firstAttribute="leading" secondItem="sa7-r5-qHk" secondAttribute="leading" constant="4" id="qCJ-Jq-nVc"/>
                 </constraints>
             </view>
-            <color key="fillColor" red="0.7019608021" green="0.7019608021" blue="0.5" alpha="1" colorSpace="calibratedRGB"/>
-            <point key="canvasLocation" x="140" y="154"/>
+            <constraints>
+                <constraint firstAttribute="width" constant="160" id="tlD-DR-MC0"/>
+            </constraints>
+            <font key="titleFont" metaFont="system"/>
+            <point key="canvasLocation" x="-309" y="-74"/>
         </box>
     </objects>
 </document>
